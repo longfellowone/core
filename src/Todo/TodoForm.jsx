@@ -42,7 +42,8 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
           indexes: product.getIndexesList().map(index => index.getIndex()),
         };
       });
-      return setResults(response);
+
+      setResults(response);
     });
   };
 
@@ -97,6 +98,22 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
     sethighlightedIndex(0);
   };
 
+  const SearchResults = () => {
+    return results.map((result, index) => {
+      return (
+        <li
+          onKeyDown={onKeyPressed}
+          onMouseDown={handleSelect}
+          onMouseEnter={() => handleMouseEnter(index)}
+          key={result.value}
+          className={handleHighlight(index)}
+        >
+          {replaceAt(result.label, result.indexes)}
+        </li>
+      );
+    });
+  };
+
   return (
     <form onSubmit={handleSubmit}>
       <input
@@ -109,19 +126,7 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
         tabIndex="0"
       />
       <ul className="list-reset">
-        {results.map((result, index) => {
-          return (
-            <li
-              onKeyDown={onKeyPressed}
-              onMouseDown={handleSelect}
-              onMouseEnter={() => handleMouseEnter(index)}
-              key={result.value}
-              className={handleHighlight(index)}
-            >
-              {replaceAt(result.label, result.indexes)}
-            </li>
-          );
-        })}
+        <SearchResults results={results} />
       </ul>
     </form>
   );
