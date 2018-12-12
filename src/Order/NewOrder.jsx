@@ -84,11 +84,11 @@ const OrderForm = () => {
   };
 
   const productInputClass =
-    'bg-white border border-grey-darkest p-3 w-3/5 -ml-px';
+    'bg-white border border-grey-darkest p-2 w-3/5 -ml-px';
   const quantityInputClass =
-    'bg-white border border-grey-darkest rounded-l-lg p-3 w-1/5';
+    'bg-white border border-grey-darkest rounded-l-lg p-2 w-1/5';
   const buttonClass =
-    'bg-green-dark border border-grey-darkest text-white font-bold rounded-r-lg p-3 -ml-px';
+    'bg-green-dark border border-grey-darkest text-white font-thin rounded-r-lg p-2 -ml-px';
 
   return (
     <form className="inline-flex justify-center">
