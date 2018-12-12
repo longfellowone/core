@@ -11,16 +11,14 @@ const initialState = {
 function orderReducer(state, action) {
   switch (action.type) {
     case 'ADD': {
-      console.log('ADD');
       return {
         ...state,
-        order: addLine(state.order),
+        order: addLineItem(state.order),
         isLoading: false,
         errorMessage: '',
       };
     }
     case 'REMOVE': {
-      console.log('REMOVE');
       return {
         ...state,
         order: [...state.order],
@@ -29,7 +27,6 @@ function orderReducer(state, action) {
       };
     }
     case 'EDIT': {
-      console.log('EDIT');
       return {
         ...state,
         order: [...state.order],
@@ -112,15 +109,15 @@ const AutoComplete = () => {
 
 const OrderList = ({ order }) => {
   return order.map(line => {
-    return <OrderLine key={line.uuid} {...line} />;
+    return <LineItem key={line.uuid} {...line} />;
   });
 };
 
-const OrderLine = ({ product }) => {
+const LineItem = ({ product }) => {
   return <div>{product}</div>;
 };
 
-const addLine = order => {
+const addLineItem = order => {
   return [
     ...order,
     {
