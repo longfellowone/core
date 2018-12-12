@@ -6,7 +6,7 @@ const Home = () => <div>Home</div>;
 
 const App = () => (
   <Router>
-    <div className="text-2xl container mx-auto mt-6">
+    <div className="text-base text-black container mx-auto mt-6">
       <ul className="mb-6 list-reset">
         <li>
           <Link to="/">Home</Link>

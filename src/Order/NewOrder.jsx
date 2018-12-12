@@ -45,13 +45,18 @@ const NewOrder = () => {
     initialState,
   );
 
+  // {isLoading ? 'Yes' : 'No'}
   return (
     <div>
       {errorMessage && <div>ERROR {errorMessage}</div>}
       <Provider value={dispatch}>
-        <div>New Order</div> <div>loading? {isLoading ? 'Yes' : 'No'}</div>
-        <OrderList order={order} />
-        <OrderForm />
+        <div className="max-w-sm mx-auto">
+          <div>
+            <OrderList order={order} />
+          </div>
+          <br />
+          <OrderForm />
+        </div>
       </Provider>
     </div>
   );
@@ -61,9 +66,6 @@ const OrderForm = () => {
   const dispatch = useContext(Context);
   const [productInput, setProductInput] = useState('');
   const [quantityInput, setQuantityInput] = useState('');
-
-  const inputClass = 'bg-white border';
-  const buttonClass = 'bg-green border uppercase';
 
   const handleProduct = e => {
     e.preventDefault();
@@ -81,25 +83,32 @@ const OrderForm = () => {
     dispatch({ type: 'ADD' });
   };
 
+  const productInputClass =
+    'bg-white border border-grey-darkest p-3 w-3/5 -ml-px';
+  const quantityInputClass =
+    'bg-white border border-grey-darkest rounded-l-lg p-3 w-1/5';
+  const buttonClass =
+    'bg-green-dark border border-grey-darkest text-white font-bold rounded-r-lg p-3 -ml-px';
+
   return (
-    <div>
-      <form>
-        <input
-          value={productInput}
-          onChange={handleProduct}
-          className={inputClass}
-        />
-        <AutoComplete />
-        <input
-          value={quantityInput}
-          onChange={handleQuantity}
-          className={inputClass}
-        />
-        <button onClick={handleSubmit} className={buttonClass}>
-          Add
-        </button>
-      </form>
-    </div>
+    <form className="inline-flex justify-center">
+      <input
+        value={quantityInput}
+        onChange={handleQuantity}
+        className={quantityInputClass}
+        placeholder="Quantity"
+      />
+      <input
+        value={productInput}
+        onChange={handleProduct}
+        className={productInputClass}
+        placeholder="Product"
+      />
+      <AutoComplete />
+      <button onClick={handleSubmit} className={buttonClass}>
+        Add
+      </button>
+    </form>
   );
 };
 
@@ -113,8 +122,16 @@ const OrderList = ({ order }) => {
   });
 };
 
-const LineItem = ({ product }) => {
-  return <div>{product}</div>;
+const LineItem = ({ product, quantity, uom }) => {
+  return (
+    <div className="flex mt-1 font-semibold text-xl">
+      <div className="w-1/5 text-right">
+        {quantity}
+        <span className="font-normal pl-1">{uom}</span>
+      </div>
+      <div className="w-4/5 pl-3">{product}</div>
+    </div>
+  );
 };
 
 const addLineItem = order => {
@@ -122,9 +139,30 @@ const addLineItem = order => {
     ...order,
     {
       uuid: Date.now(),
-      product: 'Product 2',
+      product: '1/2" EMT Connector',
       quantity: '100',
       uom: 'ea',
+      saved: false,
+    },
+    {
+      uuid: Date.now(),
+      product: '3/4" EMT Coupling',
+      quantity: '250',
+      uom: 'ea',
+      saved: false,
+    },
+    {
+      uuid: Date.now(),
+      product: '2" PVC 90',
+      quantity: '10',
+      uom: 'ea',
+      saved: false,
+    },
+    {
+      uuid: Date.now(),
+      product: '2" Flex',
+      quantity: '1000',
+      uom: 'ft',
       saved: false,
     },
   ];

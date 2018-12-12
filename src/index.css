@@ -672,7 +672,7 @@ table {
 }
 
 .bg-green-dark {
-  background-color: #1f9d55;
+  background-color: #1aac1a;
 }
 
 .bg-green {
@@ -964,7 +964,7 @@ table {
 }
 
 .hover\:bg-green-dark:hover {
-  background-color: #1f9d55;
+  background-color: #1aac1a;
 }
 
 .hover\:bg-green:hover {
@@ -1256,7 +1256,7 @@ table {
 }
 
 .focus\:bg-green-dark:focus {
-  background-color: #1f9d55;
+  background-color: #1aac1a;
 }
 
 .focus\:bg-green:focus {
@@ -1620,7 +1620,7 @@ table {
 }
 
 .border-green-dark {
-  border-color: #1f9d55;
+  border-color: #1aac1a;
 }
 
 .border-green {
@@ -1912,7 +1912,7 @@ table {
 }
 
 .hover\:border-green-dark:hover {
-  border-color: #1f9d55;
+  border-color: #1aac1a;
 }
 
 .hover\:border-green:hover {
@@ -2204,7 +2204,7 @@ table {
 }
 
 .focus\:border-green-dark:focus {
-  border-color: #1f9d55;
+  border-color: #1aac1a;
 }
 
 .focus\:border-green:focus {
@@ -4959,7 +4959,7 @@ table {
 }
 
 .text-green-dark {
-  color: #1f9d55;
+  color: #1aac1a;
 }
 
 .text-green {
@@ -5251,7 +5251,7 @@ table {
 }
 
 .hover\:text-green-dark:hover {
-  color: #1f9d55;
+  color: #1aac1a;
 }
 
 .hover\:text-green:hover {
@@ -5543,7 +5543,7 @@ table {
 }
 
 .focus\:text-green-dark:focus {
-  color: #1f9d55;
+  color: #1aac1a;
 }
 
 .focus\:text-green:focus {
@@ -6269,7 +6269,7 @@ table {
   }
 
   .sm\:bg-green-dark {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .sm\:bg-green {
@@ -6561,7 +6561,7 @@ table {
   }
 
   .sm\:hover\:bg-green-dark:hover {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .sm\:hover\:bg-green:hover {
@@ -6853,7 +6853,7 @@ table {
   }
 
   .sm\:focus\:bg-green-dark:focus {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .sm\:focus\:bg-green:focus {
@@ -7209,7 +7209,7 @@ table {
   }
 
   .sm\:border-green-dark {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .sm\:border-green {
@@ -7501,7 +7501,7 @@ table {
   }
 
   .sm\:hover\:border-green-dark:hover {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .sm\:hover\:border-green:hover {
@@ -7793,7 +7793,7 @@ table {
   }
 
   .sm\:focus\:border-green-dark:focus {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .sm\:focus\:border-green:focus {
@@ -10532,7 +10532,7 @@ table {
   }
 
   .sm\:text-green-dark {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .sm\:text-green {
@@ -10824,7 +10824,7 @@ table {
   }
 
   .sm\:hover\:text-green-dark:hover {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .sm\:hover\:text-green:hover {
@@ -11116,7 +11116,7 @@ table {
   }
 
   .sm\:focus\:text-green-dark:focus {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .sm\:focus\:text-green:focus {
@@ -11843,7 +11843,7 @@ table {
   }
 
   .md\:bg-green-dark {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .md\:bg-green {
@@ -12135,7 +12135,7 @@ table {
   }
 
   .md\:hover\:bg-green-dark:hover {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .md\:hover\:bg-green:hover {
@@ -12427,7 +12427,7 @@ table {
   }
 
   .md\:focus\:bg-green-dark:focus {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .md\:focus\:bg-green:focus {
@@ -12783,7 +12783,7 @@ table {
   }
 
   .md\:border-green-dark {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .md\:border-green {
@@ -13075,7 +13075,7 @@ table {
   }
 
   .md\:hover\:border-green-dark:hover {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .md\:hover\:border-green:hover {
@@ -13367,7 +13367,7 @@ table {
   }
 
   .md\:focus\:border-green-dark:focus {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .md\:focus\:border-green:focus {
@@ -16106,7 +16106,7 @@ table {
   }
 
   .md\:text-green-dark {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .md\:text-green {
@@ -16398,7 +16398,7 @@ table {
   }
 
   .md\:hover\:text-green-dark:hover {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .md\:hover\:text-green:hover {
@@ -16690,7 +16690,7 @@ table {
   }
 
   .md\:focus\:text-green-dark:focus {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .md\:focus\:text-green:focus {
@@ -17417,7 +17417,7 @@ table {
   }
 
   .lg\:bg-green-dark {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .lg\:bg-green {
@@ -17709,7 +17709,7 @@ table {
   }
 
   .lg\:hover\:bg-green-dark:hover {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .lg\:hover\:bg-green:hover {
@@ -18001,7 +18001,7 @@ table {
   }
 
   .lg\:focus\:bg-green-dark:focus {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .lg\:focus\:bg-green:focus {
@@ -18357,7 +18357,7 @@ table {
   }
 
   .lg\:border-green-dark {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .lg\:border-green {
@@ -18649,7 +18649,7 @@ table {
   }
 
   .lg\:hover\:border-green-dark:hover {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .lg\:hover\:border-green:hover {
@@ -18941,7 +18941,7 @@ table {
   }
 
   .lg\:focus\:border-green-dark:focus {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .lg\:focus\:border-green:focus {
@@ -21680,7 +21680,7 @@ table {
   }
 
   .lg\:text-green-dark {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .lg\:text-green {
@@ -21972,7 +21972,7 @@ table {
   }
 
   .lg\:hover\:text-green-dark:hover {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .lg\:hover\:text-green:hover {
@@ -22264,7 +22264,7 @@ table {
   }
 
   .lg\:focus\:text-green-dark:focus {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .lg\:focus\:text-green:focus {
@@ -22991,7 +22991,7 @@ table {
   }
 
   .xl\:bg-green-dark {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .xl\:bg-green {
@@ -23283,7 +23283,7 @@ table {
   }
 
   .xl\:hover\:bg-green-dark:hover {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .xl\:hover\:bg-green:hover {
@@ -23575,7 +23575,7 @@ table {
   }
 
   .xl\:focus\:bg-green-dark:focus {
-    background-color: #1f9d55;
+    background-color: #1aac1a;
   }
 
   .xl\:focus\:bg-green:focus {
@@ -23931,7 +23931,7 @@ table {
   }
 
   .xl\:border-green-dark {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .xl\:border-green {
@@ -24223,7 +24223,7 @@ table {
   }
 
   .xl\:hover\:border-green-dark:hover {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .xl\:hover\:border-green:hover {
@@ -24515,7 +24515,7 @@ table {
   }
 
   .xl\:focus\:border-green-dark:focus {
-    border-color: #1f9d55;
+    border-color: #1aac1a;
   }
 
   .xl\:focus\:border-green:focus {
@@ -27254,7 +27254,7 @@ table {
   }
 
   .xl\:text-green-dark {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .xl\:text-green {
@@ -27546,7 +27546,7 @@ table {
   }
 
   .xl\:hover\:text-green-dark:hover {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .xl\:hover\:text-green:hover {
@@ -27838,7 +27838,7 @@ table {
   }
 
   .xl\:focus\:text-green-dark:focus {
-    color: #1f9d55;
+    color: #1aac1a;
   }
 
   .xl\:focus\:text-green:focus {
