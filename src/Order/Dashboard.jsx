@@ -24,6 +24,9 @@ export const Dashboard = () => {
         <li>
           <Link to="/order/vivian/">Vivian</Link>
         </li>
+        <li>
+          <Link to="/order/todo/">Todo</Link>
+        </li>
       </ul>
     </div>
   );

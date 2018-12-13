@@ -7,6 +7,7 @@ import { OrderHistory } from './OrderHistory';
 import { Test } from './Test';
 import { Test2 } from './Test2';
 import { Vivian } from './Vivian';
+import { Todo } from '../Todo/Todo';
 
 export const Order = ({ match }) => {
   return (
@@ -18,6 +19,7 @@ export const Order = ({ match }) => {
       <Route path={match.url + '/test'} component={Test} />
       <Route path={match.url + '/test2'} component={Test2} />
       <Route path={match.url + '/vivian'} component={Vivian} />
+      <Route path={match.url + '/todo'} component={Todo} />
     </Switch>
   );
 };
