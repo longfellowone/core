@@ -18,7 +18,9 @@ export const Test2 = () => {
         </div>
         <ul className="list-reset border border-grey rounded-b rounded-t-none">
           {results.map(result => (
-            <li className="border-t border-grey p-2">{result.product}</li>
+            <li className="border-t border-grey p-2 -mt-px">
+              {result.product}
+            </li>
           ))}
         </ul>
       </div>
