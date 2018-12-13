@@ -6,20 +6,20 @@ export const Test2 = () => {
       <div className="max-w-lg mx-auto px-2 sm:text-2xl">
         <ul className="list-reset">
           {lines.map(line => (
-            <li className="flex justify-between rounded border border-grey p-3 mb-1 shadow-md">
-              <div>{line.product}</div>
+            <li className="flex justify-between items-center rounded border border-grey p-3 mb-1 shadow-md">
+              <div className="flex-1">{line.product}</div>
               <div>
                 {line.quantity} {line.uom}
               </div>
             </li>
           ))}
-          <li className="flex justify-between rounded border border-grey p-3 mb-1 shadow-md">
+          <li className="flex justify-between items-center rounded border border-grey p-3 mb-1 shadow-md">
             <div>Can of PVC Glue</div>
             <div>
               <input
-                className="bg-transparent appearance-none rounded-none border-none text-right text-black"
+                className="bg-transparent appearance-none rounded-none border-none text-right text-black w-32 sm:w-48"
                 placeholder="Enter quantity..."
-              />{' '}
+              />
               ea
             </div>
           </li>
