@@ -18,6 +18,9 @@ export const Dashboard = () => {
         <li>
           <Link to="/order/test/">Test</Link>
         </li>
+        <li>
+          <Link to="/order/vivian/">Vivian</Link>
+        </li>
       </ul>
     </div>
   );
