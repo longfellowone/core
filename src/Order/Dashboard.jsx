@@ -15,6 +15,9 @@ export const Dashboard = () => {
         <li>
           <Link to="/order/history/">Order History</Link>
         </li>
+        <li>
+          <Link to="/order/test/">Test</Link>
+        </li>
       </ul>
     </div>
   );
