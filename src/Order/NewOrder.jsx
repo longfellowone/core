@@ -84,11 +84,11 @@ const OrderForm = () => {
   };
 
   const productInputClass =
-    'bg-white border border-grey-darkest p-2 w-3/5 -ml-px';
+    'bg-white border border-grey-darkest appearance-none rounded-none p-2 w-3/5 -ml-px ';
   const quantityInputClass =
-    'bg-white border border-grey-darkest rounded-l-lg p-2 w-1/5';
+    'bg-white border border-grey-darkest appearance-none rounded-l-lg rounded-r-none p-2 w-1/5';
   const buttonClass =
-    'bg-green-dark border border-grey-darkest text-white font-thin rounded-r-lg p-2 -ml-px';
+    'bg-green-dark border border-grey-darkest text-white font-thin rounded-r-lg rounded-l-none p-2 -ml-px';
 
   return (
     <form className="inline-flex justify-center">
