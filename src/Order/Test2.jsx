@@ -6,31 +6,47 @@ export const Test2 = () => {
       <div className="max-w-lg mx-auto px-2 sm:text-2xl">
         <ul className="list-reset">
           {lines.map(line => (
-            <li className="rounded border border-grey p-2 mb-1 shadow">
-              {line.quantity} {line.uom} {line.product}
+            <li className="flex justify-between rounded border border-grey p-3 mb-1 shadow-md">
+              <div>{line.product}</div>
+              <div>
+                {line.quantity} {line.uom}
+              </div>
             </li>
           ))}
+          <li className="flex justify-between rounded border border-grey p-3 mb-1 shadow-md">
+            <div>Can of PVC Glue</div>
+            <div>
+              <input
+                className="bg-transparent appearance-none rounded-none border-none text-right text-black"
+                placeholder="Enter quantity..."
+              />{' '}
+              ea
+            </div>
+          </li>
         </ul>
 
-        <div className="">
-          {/* <input className="bg-blue appearance-none rounded-none border-none mb-2" /> */}
-          <div className="flex">
+        <div className="mb-1 mt-4 px-3">
+          Can't find what your looking for? <u>Click Here</u>
+        </div>
+        <div className="shadow-md">
+          <div className="flex rounded-tl rounded-tr rounded-b-none border border-grey border-r-0">
             <input
-              className="bg-transparent flex-1 appearance-none rounded-tl rounded-tr-none rounded-b-none border border-grey border-r-0 text-black w-full pl-3 shadow"
+              className="bg-transparent flex-1 appearance-none text-black pl-3"
               placeholder="Search for an item..."
             />
-            <button className="bg-green px-2 p-3 rounded-tr shadow relative">
+            <button className="bg-green px-2 p-3 rounded-tr text-white">
               Add
             </button>
           </div>
+          <ul className="list-reset border border-grey rounded-b -mt-px">
+            {results.map(result => (
+              <li className="flex justify-between border-t border-grey p-3 -mt-px">
+                <div>{result.product}</div>
+                <div>{result.uom}</div>
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul className="list-reset border border-grey rounded-b -mt-px shadow relative">
-          {results.map(result => (
-            <li className="border-t border-grey p-3 -mt-px">
-              {result.product}
-            </li>
-          ))}
-        </ul>
       </div>
     </>
   );

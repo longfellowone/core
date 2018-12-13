@@ -3177,6 +3177,10 @@ table {
   margin: 1px;
 }
 
+.m-1h {
+  margin: .4rem;
+}
+
 .my-0 {
   margin-top: 0;
   margin-bottom: 0;
@@ -3335,6 +3339,16 @@ table {
 .mx-px {
   margin-left: 1px;
   margin-right: 1px;
+}
+
+.my-1h {
+  margin-top: .4rem;
+  margin-bottom: .4rem;
+}
+
+.mx-1h {
+  margin-left: .4rem;
+  margin-right: .4rem;
 }
 
 .mt-0 {
@@ -3591,6 +3605,22 @@ table {
 
 .ml-px {
   margin-left: 1px;
+}
+
+.mt-1h {
+  margin-top: .4rem;
+}
+
+.mr-1h {
+  margin-right: .4rem;
+}
+
+.mb-1h {
+  margin-bottom: .4rem;
+}
+
+.ml-1h {
+  margin-left: .4rem;
 }
 
 .max-h-full {
@@ -8774,6 +8804,10 @@ table {
     margin: 1px;
   }
 
+  .sm\:m-1h {
+    margin: .4rem;
+  }
+
   .sm\:my-0 {
     margin-top: 0;
     margin-bottom: 0;
@@ -8932,6 +8966,16 @@ table {
   .sm\:mx-px {
     margin-left: 1px;
     margin-right: 1px;
+  }
+
+  .sm\:my-1h {
+    margin-top: .4rem;
+    margin-bottom: .4rem;
+  }
+
+  .sm\:mx-1h {
+    margin-left: .4rem;
+    margin-right: .4rem;
   }
 
   .sm\:mt-0 {
@@ -9188,6 +9232,22 @@ table {
 
   .sm\:ml-px {
     margin-left: 1px;
+  }
+
+  .sm\:mt-1h {
+    margin-top: .4rem;
+  }
+
+  .sm\:mr-1h {
+    margin-right: .4rem;
+  }
+
+  .sm\:mb-1h {
+    margin-bottom: .4rem;
+  }
+
+  .sm\:ml-1h {
+    margin-left: .4rem;
   }
 
   .sm\:max-h-full {
@@ -14356,6 +14416,10 @@ table {
     margin: 1px;
   }
 
+  .md\:m-1h {
+    margin: .4rem;
+  }
+
   .md\:my-0 {
     margin-top: 0;
     margin-bottom: 0;
@@ -14514,6 +14578,16 @@ table {
   .md\:mx-px {
     margin-left: 1px;
     margin-right: 1px;
+  }
+
+  .md\:my-1h {
+    margin-top: .4rem;
+    margin-bottom: .4rem;
+  }
+
+  .md\:mx-1h {
+    margin-left: .4rem;
+    margin-right: .4rem;
   }
 
   .md\:mt-0 {
@@ -14770,6 +14844,22 @@ table {
 
   .md\:ml-px {
     margin-left: 1px;
+  }
+
+  .md\:mt-1h {
+    margin-top: .4rem;
+  }
+
+  .md\:mr-1h {
+    margin-right: .4rem;
+  }
+
+  .md\:mb-1h {
+    margin-bottom: .4rem;
+  }
+
+  .md\:ml-1h {
+    margin-left: .4rem;
   }
 
   .md\:max-h-full {
@@ -19938,6 +20028,10 @@ table {
     margin: 1px;
   }
 
+  .lg\:m-1h {
+    margin: .4rem;
+  }
+
   .lg\:my-0 {
     margin-top: 0;
     margin-bottom: 0;
@@ -20096,6 +20190,16 @@ table {
   .lg\:mx-px {
     margin-left: 1px;
     margin-right: 1px;
+  }
+
+  .lg\:my-1h {
+    margin-top: .4rem;
+    margin-bottom: .4rem;
+  }
+
+  .lg\:mx-1h {
+    margin-left: .4rem;
+    margin-right: .4rem;
   }
 
   .lg\:mt-0 {
@@ -20352,6 +20456,22 @@ table {
 
   .lg\:ml-px {
     margin-left: 1px;
+  }
+
+  .lg\:mt-1h {
+    margin-top: .4rem;
+  }
+
+  .lg\:mr-1h {
+    margin-right: .4rem;
+  }
+
+  .lg\:mb-1h {
+    margin-bottom: .4rem;
+  }
+
+  .lg\:ml-1h {
+    margin-left: .4rem;
   }
 
   .lg\:max-h-full {
@@ -25520,6 +25640,10 @@ table {
     margin: 1px;
   }
 
+  .xl\:m-1h {
+    margin: .4rem;
+  }
+
   .xl\:my-0 {
     margin-top: 0;
     margin-bottom: 0;
@@ -25678,6 +25802,16 @@ table {
   .xl\:mx-px {
     margin-left: 1px;
     margin-right: 1px;
+  }
+
+  .xl\:my-1h {
+    margin-top: .4rem;
+    margin-bottom: .4rem;
+  }
+
+  .xl\:mx-1h {
+    margin-left: .4rem;
+    margin-right: .4rem;
   }
 
   .xl\:mt-0 {
@@ -25934,6 +26068,22 @@ table {
 
   .xl\:ml-px {
     margin-left: 1px;
+  }
+
+  .xl\:mt-1h {
+    margin-top: .4rem;
+  }
+
+  .xl\:mr-1h {
+    margin-right: .4rem;
+  }
+
+  .xl\:mb-1h {
+    margin-bottom: .4rem;
+  }
+
+  .xl\:ml-1h {
+    margin-left: .4rem;
   }
 
   .xl\:max-h-full {
