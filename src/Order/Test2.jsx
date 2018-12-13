@@ -6,19 +6,27 @@ export const Test2 = () => {
       <div className="max-w-lg mx-auto px-2 sm:text-2xl">
         <ul className="list-reset">
           {lines.map(line => (
-            <li className="rounded border border-grey p-2 mb-1">
+            <li className="rounded border border-grey p-2 mb-1 shadow">
               {line.quantity} {line.uom} {line.product}
             </li>
           ))}
         </ul>
 
-        <div>
-          <input className="bg-blue appearance-none rounded-none border-none" />
-          <input className="bg-green appearance-none rounded-none border-none" />
+        <div className="">
+          {/* <input className="bg-blue appearance-none rounded-none border-none mb-2" /> */}
+          <div className="flex">
+            <input
+              className="bg-transparent flex-1 appearance-none rounded-tl rounded-tr-none rounded-b-none border border-grey border-r-0 text-black w-full pl-3 shadow"
+              placeholder="Search for an item..."
+            />
+            <button className="bg-green px-2 p-3 rounded-tr shadow relative">
+              Add
+            </button>
+          </div>
         </div>
-        <ul className="list-reset border border-grey rounded-b rounded-t-none">
+        <ul className="list-reset border border-grey rounded-b -mt-px shadow relative">
           {results.map(result => (
-            <li className="border-t border-grey p-2 -mt-px">
+            <li className="border-t border-grey p-3 -mt-px">
               {result.product}
             </li>
           ))}

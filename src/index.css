@@ -516,6 +516,14 @@ table {
   }
 }
 
+.border-box {
+  box-sizing: border-box;
+}
+
+.content-box {
+  box-sizing: content-box;
+}
+
 .list-reset {
   list-style: none;
   padding: 0;
@@ -6113,6 +6121,14 @@ table {
 }
 
 @media (min-width: 576px) {
+  .sm\:border-box {
+    box-sizing: border-box;
+  }
+
+  .sm\:content-box {
+    box-sizing: content-box;
+  }
+
   .sm\:list-reset {
     list-style: none;
     padding: 0;
@@ -11687,6 +11703,14 @@ table {
 }
 
 @media (min-width: 768px) {
+  .md\:border-box {
+    box-sizing: border-box;
+  }
+
+  .md\:content-box {
+    box-sizing: content-box;
+  }
+
   .md\:list-reset {
     list-style: none;
     padding: 0;
@@ -17261,6 +17285,14 @@ table {
 }
 
 @media (min-width: 992px) {
+  .lg\:border-box {
+    box-sizing: border-box;
+  }
+
+  .lg\:content-box {
+    box-sizing: content-box;
+  }
+
   .lg\:list-reset {
     list-style: none;
     padding: 0;
@@ -22835,6 +22867,14 @@ table {
 }
 
 @media (min-width: 1200px) {
+  .xl\:border-box {
+    box-sizing: border-box;
+  }
+
+  .xl\:content-box {
+    box-sizing: content-box;
+  }
+
   .xl\:list-reset {
     list-style: none;
     padding: 0;

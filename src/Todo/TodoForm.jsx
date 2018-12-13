@@ -117,7 +117,7 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        className="w-full bg-grey-light rounded-t p-2"
+        className="w-full bg-grey-light rounded-t p-2 text-black"
         placeholder="Add new task..."
         onChange={handleChange}
         value={value}
