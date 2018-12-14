@@ -126,13 +126,13 @@ const AutoComplete = () => {
 };
 
 const OrderList = ({ order }) => {
-  console.log('OrderList Render');
   return order.map((line, index) => {
     return <LineItem key={index} {...line} />;
   });
 };
 
 const LineItem = ({ product, quantity, uom }) => {
+  // const dispatch = useContext(Context);
   return (
     <li className="flex justify-between items-center rounded-lg border border-grey p-3 mb-1h shadow-md">
       <div className="flex-1">{product}</div>
