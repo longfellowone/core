@@ -63,7 +63,6 @@ const NewOrder = () => {
 };
 
 const OrderForm = () => {
-  console.log('OrderForm Render');
   const dispatch = useContext(Context);
   const [productInput, setProductInput] = useState('');
   // const [quantityInput, setQuantityInput] = useState('');

@@ -20,8 +20,9 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
   const handleChange = async () => {
     const currentSearch = taskRef.current.value;
     const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
+    const updatedResults = await findProduct(newSearch);
     setValue(currentSearch);
-    setResults(await findProduct(newSearch));
+    setResults(updatedResults);
   };
 
   const findProduct = name => {

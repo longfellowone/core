@@ -132,6 +132,8 @@ func (s *server) RemoveTask(ctx context.Context, in *pb.RemoveTaskRequest) (*pb.
 
 func (s *server) FindProduct(ctx context.Context, in *pb.FindProductRequest) (*pb.FindProductResponse, error) {
 
+	time.Sleep(1000 * time.Millisecond)
+
 	s.results = nil
 
 	if len(in.Name) < 1 {
