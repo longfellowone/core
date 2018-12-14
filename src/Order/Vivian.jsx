@@ -7,7 +7,7 @@ export const Vivian = () => {
         <div className="p-2 mr-1">
           {' '}
           <a
-            href="#"
+            href="/"
             className="no-underline text-blue-dark hover:text-blue-light"
           >
             Home
@@ -16,7 +16,7 @@ export const Vivian = () => {
         <div className="p-2 mr-1">
           {' '}
           <a
-            href="#"
+            href="/"
             className="no-underline text-blue-dark hover:text-blue-light"
           >
             Admin
@@ -25,7 +25,7 @@ export const Vivian = () => {
         <div className="p-2 mr-1">
           {' '}
           <a
-            href="#"
+            href="/"
             className="no-underline text-blue-dark hover:text-blue-light"
           >
             Help
