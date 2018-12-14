@@ -134,8 +134,6 @@ func (s *server) FindProduct(ctx context.Context, in *pb.FindProductRequest) (*p
 
 	s.results = nil
 
-	time.Sleep(2000 * time.Millisecond)
-
 	if len(in.Name) < 1 {
 		return &pb.FindProductResponse{}, nil
 	}

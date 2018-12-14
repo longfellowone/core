@@ -3,7 +3,7 @@ import React from 'react';
 export const Test2 = () => {
   return (
     <>
-      <div className="max-w-sm mx-auto px-2 sm:text-md">
+      <div className="max-w-sm mx-auto px-2 sm:text-md mt-2">
         <ul className="list-reset">
           {lines.map(line => (
             <li className="flex justify-between items-center rounded-lg border border-grey p-3 mb-1h shadow-md">

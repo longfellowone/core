@@ -6,6 +6,7 @@ import { ReceiveOrder } from './ReceiveOrder';
 import { OrderHistory } from './OrderHistory';
 import { Test } from './Test';
 import { Test2 } from './Test2';
+import { Test3 } from './Test3';
 import { Vivian } from './Vivian';
 import { Todo } from '../Todo/Todo';
 
@@ -18,6 +19,7 @@ export const Order = ({ match }) => {
       <Route path={match.url + '/history'} component={OrderHistory} />
       <Route path={match.url + '/test'} component={Test} />
       <Route path={match.url + '/test2'} component={Test2} />
+      <Route path={match.url + '/test3'} component={Test3} />
       <Route path={match.url + '/vivian'} component={Vivian} />
       <Route path={match.url + '/todo'} component={Todo} />
     </Switch>

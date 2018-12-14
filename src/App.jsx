@@ -2,11 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Order } from './Order/Order';
 
-const Home = () => <div>Home</div>;
-
-const App = () => (
-  <Router>
-    <div className="text-base text-black container mx-auto">
+const Home = () => {
+  return (
+    <>
       <ul className="mb-2 list-reset">
         <li>
           <Link to="/">Home</Link>
@@ -15,6 +13,13 @@ const App = () => (
           <Link to="/order/">Orders</Link>
         </li>
       </ul>
+    </>
+  );
+};
+
+const App = () => (
+  <Router>
+    <div className="text-base text-black container mx-auto">
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/order/" component={Order} />

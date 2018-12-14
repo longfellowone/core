@@ -17,21 +17,18 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
     }
   };
 
-  const handleChange = () => {
+  const handleChange = async () => {
     const currentSearch = taskRef.current.value;
     const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
     setValue(currentSearch);
-    const test = async () => {
-      setResults(await findProduct(newSearch));
-    };
-    test();
+    setResults(await findProduct(newSearch));
   };
 
-  function findProduct(name) {
-    const request = new FindProductRequest();
-    request.setName(name);
-
+  const findProduct = name => {
     return new Promise(resolve => {
+      const request = new FindProductRequest();
+      request.setName(name);
+
       client.findProduct(request, {}, (err, response) => {
         if (err) {
           setError(true);
@@ -46,35 +43,11 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
             indexes: product.getIndexesList().map(index => index.getIndex()),
           };
         });
-        return resolve(response);
+
+        resolve(response);
       });
     });
-  }
-
-  // function findProduct(name) {
-  //   const request = new FindProductRequest();
-  //   request.setName(name);
-
-  //   client.findProduct(request, {}, (err, response) => {
-  //     if (err) {
-  //       setError(true);
-  //       console.log(err);
-  //       return;
-  //     }
-
-  //     response = response.getProductsList().map(product => {
-  //       return {
-  //         value: product.getUuid(),
-  //         label: product.getName(),
-  //         indexes: product.getIndexesList().map(index => index.getIndex()),
-  //       };
-  //     });
-
-  //     console.log('find product client returned', response);
-  //     return response;
-  //   });
-  //   console.log('end of find product');
-  // }
+  };
 
   const onKeyPressed = e => {
     if (results !== undefined && results.length !== 0) {

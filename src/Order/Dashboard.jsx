@@ -22,6 +22,9 @@ export const Dashboard = () => {
           <Link to="/order/test2/">Test2</Link>
         </li>
         <li>
+          <Link to="/order/test3/">Test3</Link>
+        </li>
+        <li>
           <Link to="/order/vivian/">Vivian</Link>
         </li>
         <li>
