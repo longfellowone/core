@@ -1,18 +1,23 @@
 //go:generate protoc -I ../../proto --go_out=plugins=grpc:../../proto ../../proto/todo.proto
+//docker run -d -p 8080:8080 --network=host envoy/envoy
+//CTRL + SHIFT + F10
 
 package main
 
 import (
 	"context"
+	pb "core/proto"
 	"fmt"
-	"github.com/sahilm/fuzzy"
 	"log"
 	"net"
 	"strconv"
 	"time"
-	pb "todo/proto"
 
-	"github.com/satori/go.uuid"
+	uuid "github.com/satori/go.uuid"
+
+	"github.com/sahilm/fuzzy"
+
+	_ "github.com/jnewmano/grpc-json-proxy/codec"
 	"google.golang.org/grpc"
 )
 
@@ -132,7 +137,7 @@ func (s *server) RemoveTask(ctx context.Context, in *pb.RemoveTaskRequest) (*pb.
 
 func (s *server) FindProduct(ctx context.Context, in *pb.FindProductRequest) (*pb.FindProductResponse, error) {
 
-	time.Sleep(1000 * time.Millisecond)
+	//time.Sleep(1000 * time.Millisecond)
 
 	s.results = nil
 
