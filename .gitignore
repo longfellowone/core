@@ -5,6 +5,7 @@
 /.pnp
 /.idea
 /.vscode
+/docker/mongo/data
 .pnp.js
 
 # testing
