@@ -18,19 +18,7 @@ func NewOrder() *Order {
 	}
 }
 
-type OrderRepository interface {
-	Find()
-	FindAll()
-	Create()
-	Delete()
-	Update()
-}
-
 var ErrMyError = errors.New("message")
-
-func Find() {
-
-}
 
 type OrderStatus int
 

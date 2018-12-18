@@ -7,7 +7,6 @@ package main
 
 import (
 	"context"
-	"core/pkg/grpc/v1"
 	db "core/pkg/mongo"
 	"core/pkg/ordering"
 	"fmt"
@@ -51,12 +50,13 @@ func main() {
 
 	orders, _ := db.NewOrderRepository(databaseName, client)
 
-	var os ordering.Service
-	os = ordering.NewService(orders) // Inject into gRPC service
+	//var os ordering.Service
+	os := ordering.NewService(orders) // Inject into gRPC service
 
-	server := grpc.New(os)
+	//server := grpc.New(os)
 
-	fmt.Println(server)
+	//fmt.Println(server)
+	fmt.Println(os.CreateNewOrder())
 	fmt.Println("Hello World!")
 	fmt.Printf("%T", orders)
 

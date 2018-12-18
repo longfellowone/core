@@ -6,19 +6,21 @@ import (
 	"github.com/mongodb/mongo-go-driver/mongo"
 )
 
-type orderRepository struct {
+type OrderRepository struct {
 	db     string
 	client *mongo.Client
 }
 
-func (r *orderRepository) Find()    {}
-func (r *orderRepository) FindAll() {}
-func (r *orderRepository) Create()  {}
-func (r *orderRepository) Delete()  {}
-func (r *orderRepository) Update()  {}
+func (r *OrderRepository) Find(s string) *procurement.Order {
+	return &procurement.Order{}
+}
+func (r *OrderRepository) FindAll() {}
+func (r *OrderRepository) Create()  {}
+func (r *OrderRepository) Delete()  {}
+func (r *OrderRepository) Update()  {}
 
-func NewOrderRepository(db string, client *mongo.Client) (procurement.OrderRepository, error) {
-	r := &orderRepository{
+func NewOrderRepository(db string, client *mongo.Client) (*OrderRepository, error) {
+	r := &OrderRepository{
 		db:     db,
 		client: client,
 	}
@@ -27,3 +29,11 @@ func NewOrderRepository(db string, client *mongo.Client) (procurement.OrderRepos
 
 	return r, nil
 }
+
+// type OrderRepository interface {
+// 	Find()
+// 	FindAll()
+// 	Create()
+// 	Delete()
+// 	Update()
+// }
