@@ -1,7 +1,8 @@
 package mongo
 
 import (
-	"core/pkg"
+	procurement "core/pkg"
+
 	"github.com/mongodb/mongo-go-driver/mongo"
 )
 

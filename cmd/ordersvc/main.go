@@ -9,11 +9,12 @@ import (
 	"context"
 	"core/pkg/grpc/v1"
 	db "core/pkg/mongo"
-	"core/pkg/order"
+	"core/pkg/ordering"
 	"fmt"
-	"github.com/mongodb/mongo-go-driver/mongo"
 	"log"
 	"time"
+
+	"github.com/mongodb/mongo-go-driver/mongo"
 )
 
 const (
@@ -57,5 +58,6 @@ func main() {
 
 	fmt.Println(server)
 	fmt.Println("Hello World!")
+	fmt.Printf("%T", orders)
 
 }

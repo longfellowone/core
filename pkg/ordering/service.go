@@ -1,6 +1,6 @@
 package ordering
 
-import "core/pkg"
+import procurement "core/pkg"
 
 type Service interface {
 	CreateNewOrder() string

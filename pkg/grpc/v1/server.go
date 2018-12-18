@@ -1,6 +1,6 @@
 package grpc
 
-import "core/pkg/order"
+import "core/pkg/ordering"
 
 type Server struct {
 	Ordering ordering.Service
