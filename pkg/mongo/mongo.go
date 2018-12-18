@@ -21,5 +21,8 @@ func NewOrderRepository(db string, client *mongo.Client) (procurement.OrderRepos
 		db:     db,
 		client: client,
 	}
+
+	// Build/check index here
+
 	return r, nil
 }

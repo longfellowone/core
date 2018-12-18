@@ -7,10 +7,11 @@ package main
 
 import (
 	"context"
-	"core/pkg/mongo"
+	"core/pkg/grpc/v1"
+	db "core/pkg/mongo"
 	"core/pkg/order"
 	"fmt"
-	db "github.com/mongodb/mongo-go-driver/mongo"
+	"github.com/mongodb/mongo-go-driver/mongo"
 	"log"
 	"time"
 )
@@ -42,17 +43,19 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client, err := db.Connect(ctx, mongoConnectionString)
+	client, err := mongo.Connect(ctx, mongoConnectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	orders, _ := mongo.NewOrderRepository(databaseName, client)
+	orders, _ := db.NewOrderRepository(databaseName, client)
 
 	var os ordering.Service
 	os = ordering.NewService(orders) // Inject into gRPC service
 
-	fmt.Println(os)
+	server := grpc.New(os)
+
+	fmt.Println(server)
 	fmt.Println("Hello World!")
 
 }
