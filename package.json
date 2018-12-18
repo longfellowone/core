@@ -15,7 +15,7 @@
   },
   "scripts": {
     "prestart": "tailwind build ./src/index.tailwind.css -c ./src/tailwind.js -o ./src/index.css",
-    "start": "react-scripts start",
+    "start": "sleep 1 && react-scripts start",
     "prebuild": "tailwind build ./src/index.tailwind.css -c ./src/tailwind.js -o ./src/index.css",
     "build": "react-scripts build",
     "test": "react-scripts test",
