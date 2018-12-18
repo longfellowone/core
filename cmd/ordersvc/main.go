@@ -7,61 +7,52 @@ package main
 
 import (
 	"context"
+	"core/pkg/mongo"
+	"core/pkg/order"
 	"fmt"
-	"github.com/mongodb/mongo-go-driver/mongo"
+	db "github.com/mongodb/mongo-go-driver/mongo"
 	"log"
 	"time"
 )
 
-// https://groups.google.com/forum/#!topic/mongodb-go-driver/HAvYf0x3r1U
+const (
+	defaultGRPCPort   = 9090
+	defaultDBURL      = "localhost"
+	defaultDBPort     = 27017
+	defaultDBName     = "core"
+	defaultDBUsername = "default"
+	defaultDBPassword = "password"
+)
 
 func main() {
+	//ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	//defer cancel()
+
+	var (
+		//dburl      = defaultDBURL
+		//dbusername = defaultDBUsername
+		//dbpassword = defaultDBPassword
+		databaseName          = defaultDBName
+		mongoConnectionString = fmt.Sprintf("mongodb://%s:%s@%s:%d", defaultDBUsername, defaultDBPassword, defaultDBURL, defaultDBPort)
+	)
+
+	//var (
+	//	orders procurement.OrderRepository
+	//)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-	client, err := mongo.Connect(ctx, "mongodb://default:password@localhost:27017")
+	client, err := db.Connect(ctx, mongoConnectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(client.ListDatabaseNames(ctx, nil))
-	//collection := client.Database("test").Collection("test2")
 
-	//ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
-	//res, err := collection.InsertOne(ctx, bson.M{"name": "pii", "value": 3.14159, "test": "my string"})
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//fmt.Println(res)
+	orders, _ := mongo.NewOrderRepository(databaseName, client)
 
-	//var result struct {
-	//	Value float64
-	//	Test  string
-	//}
-	//filter := bson.M{"name": "pii"}
-	//ctx, _ = context.WithTimeout(context.Background(), 30*time.Second)
-	//err = collection.FindOne(ctx, filter).Decode(&result)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//fmt.Println(result.Test)
+	var os ordering.Service
+	os = ordering.NewService(orders) // Inject into gRPC service
 
-	//ctx, _ = context.WithTimeout(context.Background(), 30*time.Second)
-	//cur, err := collection.Find(ctx, nil)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//defer cur.Close(ctx)
-	//for cur.Next(ctx) {
-	//	var result bson.M
-	//	err := cur.Decode(&result)
-	//	if err != nil {
-	//		log.Fatal(err)
-	//	}
-	//	fmt.Println(result["name"])
-	//	//bson.M -> Map
-	//	//bson.D -> Slice
-	//}
-	//if err := cur.Err(); err != nil {
-	//	log.Fatal(err)
-	//}
+	fmt.Println(os)
+	fmt.Println("Hello World!")
 
 }

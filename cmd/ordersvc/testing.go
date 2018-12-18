@@ -13,10 +13,11 @@ import (
 	"time"
 )
 
-//https://groups.google.com/forum/#!topic/mongodb-go-driver/HAvYf0x3r1U
+// https://groups.google.com/forum/#!topic/mongodb-go-driver/HAvYf0x3r1U
 
 func main() {
-	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 	client, err := mongo.Connect(ctx, "mongodb://default:password@localhost:27017")
 	if err != nil {
 		log.Fatal(err)
