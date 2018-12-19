@@ -1,8 +1,8 @@
 package mongo
 
 import (
-	procurement "core/pkg"
-
+	"core/pkg"
+	"errors"
 	"github.com/mongodb/mongo-go-driver/mongo"
 )
 
@@ -11,9 +11,18 @@ type OrderRepository struct {
 	client *mongo.Client
 }
 
-func (r *OrderRepository) Find(s string) *procurement.Order {
-	return &procurement.Order{}
+func (r *OrderRepository) Find(id procurement.OrderID) (*procurement.Order, error) {
+	if id == "1" {
+		return &procurement.Order{
+			OrderID: "1",
+			Project: "Project1",
+			Date:    "DEC 18",
+			Status:  procurement.Complete,
+		}, nil
+	}
+	return nil, errors.New("cannot find ID")
 }
+
 func (r *OrderRepository) FindAll() {}
 func (r *OrderRepository) Create()  {}
 func (r *OrderRepository) Delete()  {}

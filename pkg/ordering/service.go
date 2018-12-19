@@ -5,11 +5,12 @@ package ordering
 // }
 
 import (
-	procurement "core/pkg"
+	"core/pkg"
+	"log"
 )
 
 type orderRepository interface {
-	Find(string) *procurement.Order
+	Find(id procurement.OrderID) (*procurement.Order, error)
 	// FindAll()
 	// // Create()
 	// // Delete()
@@ -20,9 +21,27 @@ type Service struct {
 	orders orderRepository
 }
 
-func (s *Service) CreateNewOrder() string {
+func (s *Service) FindOrderByID(id procurement.OrderID) (*procurement.Order, error) {
+	order, err := s.orders.Find(id)
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	return "string"
+	return &procurement.Order{
+		OrderID: order.OrderID,
+		Project: order.Project,
+		Date:    order.Date,
+		Status:  order.Status,
+	}, nil
+}
+
+func (s *Service) CreateNewOrder(p procurement.Project) (*procurement.Order, error) {
+	return &procurement.Order{
+		OrderID: "2",
+		Project: p,
+		Date:    "DEC 19",
+		Status:  procurement.BackOrdered,
+	}, nil
 }
 
 func NewService(orders orderRepository) *Service {

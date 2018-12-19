@@ -4,8 +4,11 @@ import (
 	"errors"
 )
 
+type OrderID string
+
 type Order struct {
-	Project string
+	OrderID OrderID
+	Project Project
 	Date    string
 	Status  OrderStatus
 }
