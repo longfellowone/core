@@ -1,7 +1,13 @@
 package procurement
 
+type ProductID string
+type Category string
+type Name string
+type UOM string
+
 type Product struct {
-	Category string
-	Name     string
-	UOM      string
+	ID       ProductID
+	Category Category
+	Name     Name
+	UOM      UOM
 }

@@ -6,10 +6,12 @@
 package main
 
 import (
-	//"context"
+	"context"
 	"core/pkg"
 	"core/pkg/ordering"
+
 	"core/pkg/postgres"
+	"core/pkg/search"
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
@@ -38,6 +40,8 @@ func main() {
 		postgresConnnectionString = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s", dbHost, dbPort, dbUser, dbPasswd, dbName, sslMode)
 	)
 
+	ctx := context.Background()
+
 	//ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	//defer cancel()
 
@@ -48,13 +52,17 @@ func main() {
 	}
 	defer db.Close()
 
-	orders, _ := postgres.NewOrderRepository(db)
+	orders, _ := postgres.NewOrderRepository(ctx, db)
+	products, _ := postgres.NewProductRepository(ctx, db)
 
 	os := ordering.NewService(orders)
+	ss := search.NewService(products)
+
+	fmt.Println(ss.ProductsByString("1"))
+	fmt.Println(ss.Test())
 
 	OrderID := procurement.OrderID("1")
 	fmt.Println(os.FindOrderByID(OrderID))
-	//fmt.Println(os.CreateNewOrder("test"))
 
 	//grpc.New(os)
 

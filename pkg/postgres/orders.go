@@ -2,21 +2,29 @@
 package postgres
 
 import (
+	"context"
 	"core/pkg"
+	"core/pkg/postgres/models"
 	"database/sql"
 	"errors"
-	// core/pkg/postgres/models
+	"fmt"
+	"log"
 )
 
 type OrderRepository struct {
-	db *sql.DB
+	ctx context.Context
+	db  *sql.DB
 }
-
-//ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-//defer cancel()
 
 func (r *OrderRepository) Find(id procurement.OrderID) (*procurement.Order, error) {
 	if id == "1" {
+
+		one, err := models.Products().One(r.ctx, r.db)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(one)
+
 		return &procurement.Order{
 			OrderID: "1",
 			Project: "Project1",
@@ -32,9 +40,10 @@ func (r *OrderRepository) Create()  {}
 func (r *OrderRepository) Delete()  {}
 func (r *OrderRepository) Update()  {}
 
-func NewOrderRepository(db *sql.DB) (*OrderRepository, error) {
+func NewOrderRepository(ctx context.Context, db *sql.DB) (*OrderRepository, error) {
 	r := &OrderRepository{
-		db: db,
+		ctx: ctx,
+		db:  db,
 	}
 
 	return r, nil

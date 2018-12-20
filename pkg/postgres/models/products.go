@@ -14,7 +14,6 @@ import (
 	"time"
 
 	"github.com/pkg/errors"
-	"github.com/volatiletech/null"
 	"github.com/volatiletech/sqlboiler/boil"
 	"github.com/volatiletech/sqlboiler/queries"
 	"github.com/volatiletech/sqlboiler/queries/qm"
@@ -23,10 +22,10 @@ import (
 
 // Product is an object representing the database table.
 type Product struct {
-	Category string      `boil:"category" json:"category" toml:"category" yaml:"category"`
-	Product  null.String `boil:"product" json:"product,omitempty" toml:"product" yaml:"product,omitempty"`
-	Uom      string      `boil:"uom" json:"uom" toml:"uom" yaml:"uom"`
-	ID       int         `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Category string `boil:"category" json:"category" toml:"category" yaml:"category"`
+	Product  string `boil:"product" json:"product" toml:"product" yaml:"product"`
+	Uom      string `boil:"uom" json:"uom" toml:"uom" yaml:"uom"`
+	ID       int    `boil:"id" json:"id" toml:"id" yaml:"id"`
 
 	R *productR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L productL  `boil:"-" json:"-" toml:"-" yaml:"-"`
