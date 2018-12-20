@@ -6,53 +6,51 @@
 package main
 
 import (
-	"context"
+	//"context"
 	"core/pkg"
-	db "core/pkg/mongo"
 	"core/pkg/ordering"
+	"core/pkg/postgres"
+	"database/sql"
 	"fmt"
+	_ "github.com/lib/pq"
 	"log"
-	"time"
-
-	"github.com/mongodb/mongo-go-driver/mongo"
+	// "time"
 )
 
 const (
-	defaultGRPCPort   = 9090
-	defaultDBURL      = "localhost"
-	defaultDBPort     = 27017
-	defaultDBName     = "core"
-	defaultDBUsername = "default"
-	defaultDBPassword = "password"
+	defaultGRPCPort = 9090
+	defaultDBHost   = "localhost"
+	defaultDBPort   = 5432
+	defaultDBName   = "default"
+	defaultDBUser   = "default"
+	defaultDBPasswd = "password"
+	sslMode         = "disable"
 )
 
 func main() {
+
+	var (
+		dbHost                    = defaultDBHost
+		dbPort                    = defaultDBPort
+		dbUser                    = defaultDBUser
+		dbPasswd                  = defaultDBPasswd
+		dbName                    = defaultDBName
+		postgresConnnectionString = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s", dbHost, dbPort, dbUser, dbPasswd, dbName, sslMode)
+	)
+
 	//ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	//defer cancel()
 
-	var (
-		//dburl      = defaultDBURL
-		//dbusername = defaultDBUsername
-		//dbpassword = defaultDBPassword
-		databaseName          = defaultDBName
-		mongoConnectionString = fmt.Sprintf("mongodb://%s:%s@%s:%d", defaultDBUsername, defaultDBPassword, defaultDBURL, defaultDBPort)
-	)
-
-	//var (
-	//	orders procurement.OrderRepository
-	//)
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	client, err := mongo.Connect(ctx, mongoConnectionString)
+	db, err := sql.Open("postgres", postgresConnnectionString)
+	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.Close()
 
-	orders, _ := db.NewOrderRepository(databaseName, client)
+	orders, _ := postgres.NewOrderRepository(db)
 
-	var os *ordering.Service
-	os = ordering.NewService(orders)
+	os := ordering.NewService(orders)
 
 	OrderID := procurement.OrderID("1")
 	fmt.Println(os.FindOrderByID(OrderID))

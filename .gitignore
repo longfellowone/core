@@ -6,6 +6,7 @@
 /.idea
 /.vscode
 /docker/mongo/data
+/docker/data/postgres
 .pnp.js
 
 # testing

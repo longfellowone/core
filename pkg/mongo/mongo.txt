@@ -1,0 +1,28 @@
+const (
+	defaultGRPCPort   = 9090
+	defaultDBURL      = "localhost"
+	defaultDBPort     = 27017
+	defaultDBName     = "core"
+	defaultDBUsername = "default"
+	defaultDBPassword = "password"
+)
+
+var (
+    //dburl      = defaultDBURL
+    //dbusername = defaultDBUsername
+    //dbpassword = defaultDBPassword
+    databaseName          = defaultDBName
+    mongoConnectionString = fmt.Sprintf("mongodb://%s:%s@%s:%d", defaultDBUsername, defaultDBPassword, defaultDBURL, defaultDBPort)
+)
+
+
+ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+defer cancel()
+client, err := mongo.Connect(ctx, mongoConnectionString)
+if err != nil {
+    log.Fatal(err)
+}
+
+orders, _ := db.NewOrderRepository(databaseName, client)
+
+export PATH="$PATH:$HOME/go/bin"

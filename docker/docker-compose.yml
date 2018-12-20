@@ -2,26 +2,43 @@ version: '3.7'
 
 services:
 
-  mongo:
-    image: mongo
+  db:
+    image: postgres
     restart: always
-#    env_file: .env
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: default
-      MONGO_INITDB_ROOT_PASSWORD: password
+    env_file: .env
     ports:
-      - 27017:27017
+      - "5432:5432"
     volumes:
       - type: bind
-        source: ./mongo/data
-        target: /data/db
+        source: ./data/postgres
+        target: /var/lib/postgresql/data
 
 
-  mongo-express:
-    image: mongo-express
+  adminer:
+    image: adminer
     restart: always
     ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: default
-      ME_CONFIG_MONGODB_ADMINPASSWORD: password
+      - 8081:8080
+
+#  mongo:
+#    image: mongo
+#    restart: always
+##    env_file: .env
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: default
+#      MONGO_INITDB_ROOT_PASSWORD: password
+#    ports:
+#      - 27017:27017
+#    volumes:
+#      - type: bind
+#        source: ./mongo/data
+#        target: /data/db
+
+#  mongo-express:
+#    image: mongo-express
+#    restart: always
+#    ports:
+#      - 8081:8081
+#    environment:
+#      ME_CONFIG_MONGODB_ADMINUSERNAME: default
+#      ME_CONFIG_MONGODB_ADMINPASSWORD: password
