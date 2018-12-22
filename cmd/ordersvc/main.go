@@ -61,7 +61,7 @@ func main() {
 	fmt.Println(ss.ProductsByString("1"))
 	fmt.Println(ss.Test())
 
-	OrderID := procurement.OrderID("1")
+	OrderID := procurement.OrderID(1)
 	fmt.Println(os.FindOrderByID(OrderID))
 
 	//grpc.New(os)

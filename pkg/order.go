@@ -4,7 +4,7 @@ import (
 	"errors"
 )
 
-type OrderID string
+type OrderID int
 
 type Order struct {
 	OrderID OrderID
@@ -13,12 +13,13 @@ type Order struct {
 	Status  OrderStatus
 }
 
-func NewOrder() *Order {
+func NewOrder(p Project) (*Order, error) {
 	return &Order{
-		Project: "",
-		Date:    "",
-		Status:  Complete,
-	}
+		OrderID: 1,
+		Project: p,
+		Date:    "Today",
+		Status:  BackOrdered,
+	}, nil
 }
 
 var ErrMyError = errors.New("message")

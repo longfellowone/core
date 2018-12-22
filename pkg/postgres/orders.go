@@ -6,7 +6,6 @@ import (
 	"core/pkg"
 	"core/pkg/postgres/models"
 	"database/sql"
-	"errors"
 	"fmt"
 	"log"
 )
@@ -17,22 +16,19 @@ type OrderRepository struct {
 }
 
 func (r *OrderRepository) Find(id procurement.OrderID) (*procurement.Order, error) {
-	if id == "1" {
 
-		one, err := models.Products().One(r.ctx, r.db)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(one)
-
-		return &procurement.Order{
-			OrderID: "1",
-			Project: "Project1",
-			Date:    "DEC 18",
-			Status:  procurement.Complete,
-		}, nil
+	one, err := models.Products().One(r.ctx, r.db)
+	if err != nil {
+		log.Fatal(err)
 	}
-	return nil, errors.New("cannot find ID")
+	fmt.Println(one, "text")
+
+	return &procurement.Order{
+		OrderID: 1,
+		Project: "Project1",
+		Date:    "DEC 18",
+		Status:  procurement.Complete,
+	}, nil
 }
 
 func (r *OrderRepository) FindAll() {}

@@ -22,26 +22,22 @@ type Service struct {
 }
 
 func (s *Service) FindOrderByID(id procurement.OrderID) (*procurement.Order, error) {
+
 	order, err := s.orders.Find(id)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return &procurement.Order{
-		OrderID: order.OrderID,
-		Project: order.Project,
-		Date:    order.Date,
-		Status:  order.Status,
-	}, nil
+	return order, nil
 }
 
 func (s *Service) CreateNewOrder(p procurement.Project) (*procurement.Order, error) {
-	return &procurement.Order{
-		OrderID: "2",
-		Project: p,
-		Date:    "DEC 19",
-		Status:  procurement.BackOrdered,
-	}, nil
+
+	order, err := procurement.NewOrder(p)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return order, nil
 }
 
 func NewService(orders orderRepository) *Service {

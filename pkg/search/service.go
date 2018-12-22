@@ -1,12 +1,10 @@
 package search
 
+import "core/pkg"
+
 // type Service interface {
 // 	CreateNewOrder() string
 // }
-
-import (
-	"core/pkg"
-)
 
 type productRepository interface {
 	FindAll() ([]procurement.Product, error)
@@ -37,6 +35,7 @@ func NewService(products productRepository) *Service {
 	// https://github.com/coocood/freecache
 	// https://github.com/go-redis/redis
 	// https://github.com/golang/groupcache
+	// https://goenning.net/2017/03/18/server-side-cache-go/
 
 	return &Service{
 		products:     products,
