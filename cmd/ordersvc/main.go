@@ -46,11 +46,15 @@ func main() {
 	//defer cancel()
 
 	db, err := sql.Open("postgres", postgresConnnectionString)
-	err = db.Ping()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
+
+	err = db.Ping()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	orders, _ := postgres.NewOrderRepository(ctx, db)
 	products, _ := postgres.NewProductRepository(ctx, db)
