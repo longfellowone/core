@@ -9,19 +9,16 @@ import (
 	"log"
 )
 
-type orderRepository interface {
-	Find(id procurement.OrderID) (*procurement.Order, error)
-	// FindAll()
-	// // Create()
-	// // Delete()
-	// Update()
+type Service interface {
+	FindOrderByID(id procurement.OrderID) (*procurement.Order, error)
+	CreateNewOrder(p procurement.Project) (*procurement.Order, error)
 }
 
-type Service struct {
-	orders orderRepository
+type service struct {
+	orders procurement.OrderRepository
 }
 
-func (s *Service) FindOrderByID(id procurement.OrderID) (*procurement.Order, error) {
+func (s *service) FindOrderByID(id procurement.OrderID) (*procurement.Order, error) {
 
 	order, err := s.orders.Find(id)
 	if err != nil {
@@ -31,7 +28,7 @@ func (s *Service) FindOrderByID(id procurement.OrderID) (*procurement.Order, err
 	return order, nil
 }
 
-func (s *Service) CreateNewOrder(p procurement.Project) (*procurement.Order, error) {
+func (s *service) CreateNewOrder(p procurement.Project) (*procurement.Order, error) {
 
 	order, err := procurement.NewOrder(p)
 	if err != nil {
@@ -40,8 +37,8 @@ func (s *Service) CreateNewOrder(p procurement.Project) (*procurement.Order, err
 	return order, nil
 }
 
-func NewService(orders orderRepository) *Service {
-	return &Service{
+func NewService(orders procurement.OrderRepository) Service {
+	return &service{
 		orders: orders,
 	}
 }

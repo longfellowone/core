@@ -22,6 +22,14 @@ func NewOrder(p Project) (*Order, error) {
 	}, nil
 }
 
+type OrderRepository interface {
+	Find(id OrderID) (*Order, error)
+	// FindAll()
+	// // Create()
+	// // Delete()
+	// Update()
+}
+
 var ErrMyError = errors.New("message")
 
 type OrderStatus int

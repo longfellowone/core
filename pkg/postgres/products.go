@@ -1,4 +1,4 @@
-//go:generate sqlboiler psql
+//go:generate sqlboiler psql --no-context
 package postgres
 
 import (
@@ -6,31 +6,31 @@ import (
 	"core/pkg"
 	"core/pkg/postgres/models"
 	"database/sql"
-	"errors"
+	"fmt"
 	"log"
 )
 
-type ProductRepository struct {
+type productRepository struct {
 	ctx context.Context
 	db  *sql.DB
 }
 
-func (r *ProductRepository) FindAllTest(string procurement.ProductID) (*procurement.Product, error) {
-	if string == "1" {
+func (r *productRepository) FindAllTest(string procurement.ProductID) (*procurement.Product, error) {
 
-		one, err := models.Products().One(r.ctx, r.db)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		return &procurement.Product{Name: procurement.Name(one.Product)}, nil
+	one, err := models.Products().One(r.db)
+	if err != nil {
+		log.Fatal(err)
 	}
-	return nil, errors.New("cannot find ID")
+
+	fmt.Println(string)
+
+	return &procurement.Product{Name: procurement.Name(one.Product)}, nil
+
 }
 
-func (r *ProductRepository) FindAll() ([]procurement.Product, error) {
+func (r *productRepository) FindAll() (*[]procurement.Product, error) {
 
-	findAll, err := models.Products().All(r.ctx, r.db)
+	findAll, err := models.Products().All(r.db)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,22 +41,17 @@ func (r *ProductRepository) FindAll() ([]procurement.Product, error) {
 		products = append(products, procurement.Product{Name: procurement.Name(v.Product)})
 	}
 
-	//s.results = append(s.results, &pb.Product{Name: r.Str, Uuid: id, Indexes: indexes})
-
-	return products, nil
+	return &products, nil
 }
 
-func (r *ProductRepository) Create() {}
-func (r *ProductRepository) Delete() {}
-func (r *ProductRepository) Update() {}
+func (r *productRepository) Create() {}
+func (r *productRepository) Delete() {}
+func (r *productRepository) Update() {}
 
-func NewProductRepository(ctx context.Context, db *sql.DB) (*ProductRepository, error) {
-	r := &ProductRepository{
-		ctx: ctx,
-		db:  db,
+func NewProductRepository(db *sql.DB) procurement.ProductRepository {
+	return &productRepository{
+		db: db,
 	}
-
-	return r, nil
 }
 
 // type OrderRepository interface {

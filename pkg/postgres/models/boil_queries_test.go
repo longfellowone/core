@@ -16,7 +16,7 @@ import (
 
 var dbNameRand *rand.Rand
 
-func MustTx(transactor boil.ContextTransactor, err error) boil.ContextTransactor {
+func MustTx(transactor boil.Transactor, err error) boil.Transactor {
 	if err != nil {
 		panic(fmt.Sprintf("Cannot create a transactor: %s", err))
 	}

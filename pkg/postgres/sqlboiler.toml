@@ -4,3 +4,4 @@
     user = "default"
     pass = "password"
     sslmode = "disable"
+    no-context = "true"

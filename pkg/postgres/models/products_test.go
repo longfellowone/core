@@ -5,7 +5,6 @@ package models
 
 import (
 	"bytes"
-	"context"
 	"reflect"
 	"testing"
 
@@ -41,20 +40,19 @@ func testProductsDelete(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	if rowsAff, err := o.Delete(ctx, tx); err != nil {
+	if rowsAff, err := o.Delete(tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -74,20 +72,19 @@ func testProductsQueryDeleteAll(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	if rowsAff, err := Products().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := Products().DeleteAll(tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -107,22 +104,21 @@ func testProductsSliceDeleteAll(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
 	slice := ProductSlice{o}
 
-	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := slice.DeleteAll(tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -142,14 +138,13 @@ func testProductsExists(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	e, err := ProductExists(ctx, tx, o.ID)
+	e, err := ProductExists(tx, o.ID)
 	if err != nil {
 		t.Errorf("Unable to check if Product exists: %s", err)
 	}
@@ -168,14 +163,13 @@ func testProductsFind(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	productFound, err := FindProduct(ctx, tx, o.ID)
+	productFound, err := FindProduct(tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
@@ -195,14 +189,13 @@ func testProductsBind(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	if err = Products().Bind(ctx, tx, o); err != nil {
+	if err = Products().Bind(nil, tx, o); err != nil {
 		t.Error(err)
 	}
 }
@@ -217,14 +210,13 @@ func testProductsOne(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	if x, err := Products().One(ctx, tx); err != nil {
+	if x, err := Products().One(tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
@@ -245,17 +237,16 @@ func testProductsAll(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = productOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = productOne.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = productTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = productTwo.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Products().All(ctx, tx)
+	slice, err := Products().All(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -279,17 +270,16 @@ func testProductsCount(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = productOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = productOne.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = productTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = productTwo.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,47 +289,47 @@ func testProductsCount(t *testing.T) {
 	}
 }
 
-func productBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productBeforeInsertHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
 
-func productAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productAfterInsertHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
 
-func productAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productAfterSelectHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
 
-func productBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productBeforeUpdateHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
 
-func productAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productAfterUpdateHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
 
-func productBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productBeforeDeleteHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
 
-func productAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productAfterDeleteHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
 
-func productBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productBeforeUpsertHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
 
-func productAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Product) error {
+func productAfterUpsertHook(e boil.Executor, o *Product) error {
 	*o = Product{}
 	return nil
 }
@@ -349,7 +339,6 @@ func testProductsHooks(t *testing.T) {
 
 	var err error
 
-	ctx := context.Background()
 	empty := &Product{}
 	o := &Product{}
 
@@ -359,7 +348,7 @@ func testProductsHooks(t *testing.T) {
 	}
 
 	AddProductHook(boil.BeforeInsertHook, productBeforeInsertHook)
-	if err = o.doBeforeInsertHooks(ctx, nil); err != nil {
+	if err = o.doBeforeInsertHooks(nil); err != nil {
 		t.Errorf("Unable to execute doBeforeInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -368,7 +357,7 @@ func testProductsHooks(t *testing.T) {
 	productBeforeInsertHooks = []ProductHook{}
 
 	AddProductHook(boil.AfterInsertHook, productAfterInsertHook)
-	if err = o.doAfterInsertHooks(ctx, nil); err != nil {
+	if err = o.doAfterInsertHooks(nil); err != nil {
 		t.Errorf("Unable to execute doAfterInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -377,7 +366,7 @@ func testProductsHooks(t *testing.T) {
 	productAfterInsertHooks = []ProductHook{}
 
 	AddProductHook(boil.AfterSelectHook, productAfterSelectHook)
-	if err = o.doAfterSelectHooks(ctx, nil); err != nil {
+	if err = o.doAfterSelectHooks(nil); err != nil {
 		t.Errorf("Unable to execute doAfterSelectHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -386,7 +375,7 @@ func testProductsHooks(t *testing.T) {
 	productAfterSelectHooks = []ProductHook{}
 
 	AddProductHook(boil.BeforeUpdateHook, productBeforeUpdateHook)
-	if err = o.doBeforeUpdateHooks(ctx, nil); err != nil {
+	if err = o.doBeforeUpdateHooks(nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -395,7 +384,7 @@ func testProductsHooks(t *testing.T) {
 	productBeforeUpdateHooks = []ProductHook{}
 
 	AddProductHook(boil.AfterUpdateHook, productAfterUpdateHook)
-	if err = o.doAfterUpdateHooks(ctx, nil); err != nil {
+	if err = o.doAfterUpdateHooks(nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -404,7 +393,7 @@ func testProductsHooks(t *testing.T) {
 	productAfterUpdateHooks = []ProductHook{}
 
 	AddProductHook(boil.BeforeDeleteHook, productBeforeDeleteHook)
-	if err = o.doBeforeDeleteHooks(ctx, nil); err != nil {
+	if err = o.doBeforeDeleteHooks(nil); err != nil {
 		t.Errorf("Unable to execute doBeforeDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -413,7 +402,7 @@ func testProductsHooks(t *testing.T) {
 	productBeforeDeleteHooks = []ProductHook{}
 
 	AddProductHook(boil.AfterDeleteHook, productAfterDeleteHook)
-	if err = o.doAfterDeleteHooks(ctx, nil); err != nil {
+	if err = o.doAfterDeleteHooks(nil); err != nil {
 		t.Errorf("Unable to execute doAfterDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -422,7 +411,7 @@ func testProductsHooks(t *testing.T) {
 	productAfterDeleteHooks = []ProductHook{}
 
 	AddProductHook(boil.BeforeUpsertHook, productBeforeUpsertHook)
-	if err = o.doBeforeUpsertHooks(ctx, nil); err != nil {
+	if err = o.doBeforeUpsertHooks(nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -431,7 +420,7 @@ func testProductsHooks(t *testing.T) {
 	productBeforeUpsertHooks = []ProductHook{}
 
 	AddProductHook(boil.AfterUpsertHook, productAfterUpsertHook)
-	if err = o.doAfterUpsertHooks(ctx, nil); err != nil {
+	if err = o.doAfterUpsertHooks(nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
@@ -450,14 +439,13 @@ func testProductsInsert(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -477,14 +465,13 @@ func testProductsInsertWhitelist(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(productColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(tx, boil.Whitelist(productColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -504,14 +491,13 @@ func testProductsReload(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	if err = o.Reload(ctx, tx); err != nil {
+	if err = o.Reload(tx); err != nil {
 		t.Error(err)
 	}
 }
@@ -526,16 +512,15 @@ func testProductsReloadAll(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
 	slice := ProductSlice{o}
 
-	if err = slice.ReloadAll(ctx, tx); err != nil {
+	if err = slice.ReloadAll(tx); err != nil {
 		t.Error(err)
 	}
 }
@@ -550,14 +535,13 @@ func testProductsSelect(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Products().All(ctx, tx)
+	slice, err := Products().All(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -589,14 +573,13 @@ func testProductsUpdate(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -609,7 +592,7 @@ func testProductsUpdate(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
+	if rowsAff, err := o.Update(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only affect one row but affected", rowsAff)
@@ -630,14 +613,13 @@ func testProductsSliceUpdateAll(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = o.Insert(tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -676,7 +658,7 @@ func testProductsSliceUpdateAll(t *testing.T) {
 	}
 
 	slice := ProductSlice{o}
-	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
+	if rowsAff, err := slice.UpdateAll(tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("wanted one record updated but got", rowsAff)
@@ -698,14 +680,13 @@ func testProductsUpsert(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	ctx := context.Background()
-	tx := MustTx(boil.BeginTx(ctx, nil))
+	tx := MustTx(boil.Begin())
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Upsert(ctx, tx, false, nil, boil.Infer(), boil.Infer()); err != nil {
+	if err = o.Upsert(tx, false, nil, boil.Infer(), boil.Infer()); err != nil {
 		t.Errorf("Unable to upsert Product: %s", err)
 	}
 
-	count, err := Products().Count(ctx, tx)
+	count, err := Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -718,11 +699,11 @@ func testProductsUpsert(t *testing.T) {
 		t.Errorf("Unable to randomize Product struct: %s", err)
 	}
 
-	if err = o.Upsert(ctx, tx, true, nil, boil.Infer(), boil.Infer()); err != nil {
+	if err = o.Upsert(tx, true, nil, boil.Infer(), boil.Infer()); err != nil {
 		t.Errorf("Unable to upsert Product: %s", err)
 	}
 
-	count, err = Products().Count(ctx, tx)
+	count, err = Products().Count(tx)
 	if err != nil {
 		t.Error(err)
 	}

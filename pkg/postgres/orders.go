@@ -10,18 +10,19 @@ import (
 	"log"
 )
 
-type OrderRepository struct {
+type orderRepository struct {
 	ctx context.Context
 	db  *sql.DB
 }
 
-func (r *OrderRepository) Find(id procurement.OrderID) (*procurement.Order, error) {
+func (r *orderRepository) Find(id procurement.OrderID) (*procurement.Order, error) {
 
-	one, err := models.Products().One(r.ctx, r.db)
+	one, err := models.Products().One(r.db)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(one, "text")
+
+	fmt.Println(one)
 
 	return &procurement.Order{
 		OrderID: 1,
@@ -31,18 +32,15 @@ func (r *OrderRepository) Find(id procurement.OrderID) (*procurement.Order, erro
 	}, nil
 }
 
-func (r *OrderRepository) FindAll() {}
-func (r *OrderRepository) Create()  {}
-func (r *OrderRepository) Delete()  {}
-func (r *OrderRepository) Update()  {}
+func (r *orderRepository) FindAll() {}
+func (r *orderRepository) Create()  {}
+func (r *orderRepository) Delete()  {}
+func (r *orderRepository) Update()  {}
 
-func NewOrderRepository(ctx context.Context, db *sql.DB) (*OrderRepository, error) {
-	r := &OrderRepository{
-		ctx: ctx,
-		db:  db,
+func NewOrderRepository(db *sql.DB) procurement.OrderRepository {
+	return &orderRepository{
+		db: db,
 	}
-
-	return r, nil
 }
 
 // type OrderRepository interface {

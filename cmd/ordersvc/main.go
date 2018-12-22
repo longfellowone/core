@@ -6,7 +6,6 @@
 package main
 
 import (
-	"context"
 	"core/pkg"
 	"core/pkg/ordering"
 
@@ -40,8 +39,6 @@ func main() {
 		postgresConnnectionString = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s", dbHost, dbPort, dbUser, dbPasswd, dbName, sslMode)
 	)
 
-	ctx := context.Background()
-
 	//ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	//defer cancel()
 
@@ -56,17 +53,22 @@ func main() {
 		log.Fatal(err)
 	}
 
-	orders, _ := postgres.NewOrderRepository(ctx, db)
-	products, _ := postgres.NewProductRepository(ctx, db)
+	var (
+		orders   procurement.OrderRepository
+		products procurement.ProductRepository
+	)
+
+	orders = postgres.NewOrderRepository(db)
+	products = postgres.NewProductRepository(db)
 
 	os := ordering.NewService(orders)
 	ss := search.NewService(products)
 
-	fmt.Println(ss.ProductsByString("1"))
-	fmt.Println(ss.Test())
-
 	OrderID := procurement.OrderID(1)
 	fmt.Println(os.FindOrderByID(OrderID))
+
+	fmt.Println(ss.ProductsByString("1"))
+	fmt.Println(ss.Test())
 
 	//grpc.New(os)
 

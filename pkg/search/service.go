@@ -2,21 +2,22 @@ package search
 
 import "core/pkg"
 
-// type Service interface {
-// 	CreateNewOrder() string
-// }
-
-type productRepository interface {
-	FindAll() ([]procurement.Product, error)
-	FindAllTest(string procurement.ProductID) (*procurement.Product, error)
+type Service interface {
+	ProductsByString(string procurement.ProductID) (*procurement.Product, error)
+	Test() *[]procurement.Product
 }
 
-type Service struct {
-	products     productRepository
-	productsList []procurement.Product
+//type productRepository interface {
+//	FindAll() ([]procurement.Product, error)
+//	FindAllTest(string procurement.ProductID) (*procurement.Product, error)
+//}
+
+type service struct {
+	products     procurement.ProductRepository
+	productsList *[]procurement.Product
 }
 
-func (s *Service) ProductsByString(string procurement.ProductID) (*procurement.Product, error) {
+func (s *service) ProductsByString(string procurement.ProductID) (*procurement.Product, error) {
 	result, err := s.products.FindAllTest(string)
 	if err != nil {
 		return &procurement.Product{}, err
@@ -25,11 +26,11 @@ func (s *Service) ProductsByString(string procurement.ProductID) (*procurement.P
 	return &procurement.Product{Name: result.Name}, nil
 }
 
-func (s *Service) Test() []procurement.Product {
+func (s *service) Test() *[]procurement.Product {
 	return s.productsList
 }
 
-func NewService(products productRepository) *Service {
+func NewService(products procurement.ProductRepository) Service {
 	productsList, _ := products.FindAll()
 	// cache all products for search
 	// https://github.com/coocood/freecache
@@ -37,7 +38,7 @@ func NewService(products productRepository) *Service {
 	// https://github.com/golang/groupcache
 	// https://goenning.net/2017/03/18/server-side-cache-go/
 
-	return &Service{
+	return &service{
 		products:     products,
 		productsList: productsList,
 	}

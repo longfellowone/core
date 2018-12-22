@@ -11,3 +11,8 @@ type Product struct {
 	Name     Name
 	UOM      UOM
 }
+
+type ProductRepository interface {
+	FindAll() (*[]Product, error)
+	FindAllTest(string ProductID) (*Product, error)
+}
