@@ -8,7 +8,7 @@ type OrderID int
 
 type Order struct {
 	OrderID OrderID
-	Project Project
+	Project ProjectID
 	Date    string
 	Status  OrderStatus
 }
@@ -16,7 +16,7 @@ type Order struct {
 func NewOrder(p Project) (*Order, error) {
 	return &Order{
 		OrderID: 1,
-		Project: p,
+		Project: ProjectID("1"),
 		Date:    "Today",
 		Status:  BackOrdered,
 	}, nil

@@ -1,7 +1,7 @@
 package grpc
 
-import "core/pkg/ordering"
+import "core/pkg/field"
 
 type orderHandler struct {
-	s ordering.Service
+	s field.Service
 }

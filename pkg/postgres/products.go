@@ -4,10 +4,7 @@ package postgres
 import (
 	"context"
 	"core/pkg"
-	"core/pkg/postgres/models"
 	"database/sql"
-	"fmt"
-	"log"
 )
 
 type productRepository struct {
@@ -15,34 +12,35 @@ type productRepository struct {
 	db  *sql.DB
 }
 
-func (r *productRepository) FindAllTest(string procurement.ProductID) (*procurement.Product, error) {
+//func (r *productRepository) FindAllTest(string procurement.ProductID) (*procurement.Product, error) {
+//
+//	one, err := models.Products().One(r.db)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	fmt.Println(string)
+//
+//	return &procurement.Product{Name: procurement.Name(one.Product)}, nil
+//
+//}
 
-	one, err := models.Products().One(r.db)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println(string)
-
-	return &procurement.Product{Name: procurement.Name(one.Product)}, nil
-
-}
-
-func (r *productRepository) FindAll() (*[]procurement.Product, error) {
-
-	findAll, err := models.Products().All(r.db)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var products []procurement.Product
-
-	for _, v := range findAll {
-		products = append(products, procurement.Product{Name: procurement.Name(v.Product)})
-	}
-
-	return &products, nil
-}
+//func (r *productRepository) FindAll() (*[]procurement.Product, error) {
+//
+//	findAll, err := models.Products().All(r.db)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	var products *[]procurement.Product
+//
+//	for _, v := range findAll {
+//		fmt.Sprintln(v)
+//		//*products = append(*products, procurement.Product{Name: procurement.Name(v.Product)})
+//	}
+//
+//	return products, nil
+//}
 
 func (r *productRepository) Create() {}
 func (r *productRepository) Delete() {}

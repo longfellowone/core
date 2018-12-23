@@ -1,3 +1,8 @@
 package procurement
 
-type Project string
+type ProjectID string
+
+type Project struct {
+	ProjectID ProjectID
+	Name      string
+}

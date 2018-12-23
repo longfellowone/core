@@ -1,12 +1,12 @@
 package grpc
 
-import "core/pkg/ordering"
+import "core/pkg/field"
 
 type Server struct {
-	Ordering ordering.Service
+	Ordering field.Service
 }
 
-func New(os ordering.Service) *Server {
+func New(os field.Service) *Server {
 	s := &Server{
 		Ordering: os,
 	}

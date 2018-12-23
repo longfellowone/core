@@ -7,7 +7,7 @@ package main
 
 import (
 	"core/pkg"
-	"core/pkg/ordering"
+	"core/pkg/field"
 
 	"core/pkg/postgres"
 	"core/pkg/search"
@@ -61,17 +61,18 @@ func main() {
 	orders = postgres.NewOrderRepository(db)
 	products = postgres.NewProductRepository(db)
 
-	os := ordering.NewService(orders)
+	os := field.NewService(orders)
 	ss := search.NewService(products)
+
+	ss.Test()
 
 	OrderID := procurement.OrderID(1)
 	fmt.Println(os.FindOrderByID(OrderID))
-
-	fmt.Println(ss.ProductsByString("1"))
-	fmt.Println(ss.Test())
 
 	//grpc.New(os)
 
 	//fmt.Println(server)
 
 }
+
+//fmt.Printf("text%vtext", (*v)[0])

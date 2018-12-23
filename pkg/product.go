@@ -13,6 +13,6 @@ type Product struct {
 }
 
 type ProductRepository interface {
-	FindAll() (*[]Product, error)
-	FindAllTest(string ProductID) (*Product, error)
+	//FindAll() (*[]Product, error)
+	//FindAllTest(string ProductID) (*Product, error)
 }
