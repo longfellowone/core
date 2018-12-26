@@ -21,25 +21,25 @@ import (
 
 // Product is an object representing the database table.
 type Product struct {
-	Category string `boil:"category" json:"category" toml:"category" yaml:"category"`
+	ID       int    `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Product  string `boil:"product" json:"product" toml:"product" yaml:"product"`
 	Uom      string `boil:"uom" json:"uom" toml:"uom" yaml:"uom"`
-	ID       int    `boil:"id" json:"id" toml:"id" yaml:"id"`
+	Category string `boil:"category" json:"category" toml:"category" yaml:"category"`
 
 	R *productR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L productL  `boil:"-" json:"-" toml:"-" yaml:"-"`
 }
 
 var ProductColumns = struct {
-	Category string
+	ID       string
 	Product  string
 	Uom      string
-	ID       string
+	Category string
 }{
-	Category: "category",
+	ID:       "id",
 	Product:  "product",
 	Uom:      "uom",
-	ID:       "id",
+	Category: "category",
 }
 
 // ProductRels is where relationship names are stored.
@@ -59,8 +59,8 @@ func (*productR) NewStruct() *productR {
 type productL struct{}
 
 var (
-	productColumns               = []string{"category", "product", "uom", "id"}
-	productColumnsWithoutDefault = []string{"category", "product", "uom"}
+	productColumns               = []string{"id", "product", "uom", "category"}
+	productColumnsWithoutDefault = []string{"product", "uom", "category"}
 	productColumnsWithDefault    = []string{"id"}
 	productPrimaryKeyColumns     = []string{"id"}
 )
