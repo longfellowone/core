@@ -8,10 +8,10 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
 
   const handleSubmit = (e, index) => {
     e.preventDefault();
-    //if (!value) return;
     if (results !== undefined && results.length !== 0) {
       addTask(uuid(), results[index].label);
       setResults([]);
+      sethighlightedIndex(0);
       taskRef.current.value = '';
     }
   };
@@ -47,17 +47,17 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
     });
   };
 
-  const onKeyPressed = (e, index) => {
+  const onKeyPressed = e => {
     if (results !== undefined && results.length !== 0) {
       if (e.key === 'Escape') {
         setResults([]);
         sethighlightedIndex(0);
       }
       if (e.key === 'Tab') {
-        handleSelect(e, highlightedIndex);
+        handleSubmit(e, highlightedIndex);
       }
       if (e.key === 'Enter') {
-        handleSelect(e, highlightedIndex);
+        handleSubmit(e, highlightedIndex);
       }
       if (e.key === 'ArrowDown') {
         if (highlightedIndex !== results.length - 1) {
@@ -76,41 +76,38 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
 
   const highlight = index => {
     if (highlightedIndex === index) {
-      return 'bg-grey-dark p-2 font-bold cursor-pointer ';
+      return 'bg-grey-dark p-2 font-bold cursor-pointer';
     } else {
       return 'bg-grey-light p-2 font-bold cursor-pointer hover:bg-grey-dark';
     }
   };
 
-  const handleSelect = (e, index) => {
-    e.preventDefault();
-    handleSubmit(e, index);
-    sethighlightedIndex(0);
+  const SearchResults = () => {
+    return results.map((result, index) => (
+      <Result key={result.value} result={result} index={index} />
+    ));
   };
 
-  const SearchResults = () => {
-    return results.map((result, index) => {
-      return (
-        <li
-          onKeyDown={onKeyPressed}
-          onClick={e => handleSelect(e, index)}
-          key={result.value}
-          className={highlight(index)}
-        >
-          {replaceAt(result.label, result.indexes)}
-        </li>
-      );
-    });
+  const Result = ({ result, index }) => {
+    return (
+      <li
+        onKeyDown={onKeyPressed}
+        onClick={e => handleSubmit(e, index)}
+        className={highlight(index)}
+      >
+        {replaceAt(result.indexes, result.label)}
+      </li>
+    );
   };
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input
         className="w-full bg-grey-light rounded-t p-2 text-black"
         placeholder="Add new task..."
         onChange={handleChange}
-        ref={taskRef}
         onKeyDown={onKeyPressed}
+        ref={taskRef}
         tabIndex="0"
       />
       <ul className="list-reset">
@@ -119,7 +116,7 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
     </form>
   );
 
-  function replaceAt(string, indexArray) {
+  function replaceAt(indexArray, string) {
     let newString = [...string];
 
     for (let i = 0; i < indexArray.length; i++) {
@@ -131,7 +128,6 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
         ),
       });
     }
-
     return newString;
   }
 };
