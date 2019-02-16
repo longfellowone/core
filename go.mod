@@ -4,6 +4,7 @@ require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/protobuf v1.2.0
 	github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db // indirect
+	github.com/google/wire v0.2.0
 	github.com/jnewmano/grpc-json-proxy v0.0.0-20180914194908-38a7fdf2bd5c // indirect
 	github.com/lib/pq v1.0.0
 	github.com/mongodb/mongo-go-driver v0.1.0

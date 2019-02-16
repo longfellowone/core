@@ -2,18 +2,17 @@ import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FindProductRequest } from './proto/todo_pb';
 
-export const TodoForm = ({ addTask, taskRef, client, setError }) => {
+export const TodoForm = ({ addTask, taskRef, client }) => {
   const [results, setResults] = useState([]);
-  const [value, setValue] = useState('');
   const [highlightedIndex, sethighlightedIndex] = useState(0);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e, index) => {
     e.preventDefault();
     //if (!value) return;
     if (results !== undefined && results.length !== 0) {
-      addTask(uuid(), results[highlightedIndex].label);
+      addTask(uuid(), results[index].label);
       setResults([]);
-      setValue('');
+      taskRef.current.value = '';
     }
   };
 
@@ -21,7 +20,6 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
     const currentSearch = taskRef.current.value;
     const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
     const updatedResults = await findProduct(newSearch);
-    setValue(currentSearch);
     setResults(updatedResults);
   };
 
@@ -32,7 +30,6 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
 
       client.findProduct(request, {}, (err, response) => {
         if (err) {
-          setError(true);
           console.log(err);
           return;
         }
@@ -50,54 +47,44 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
     });
   };
 
-  const onKeyPressed = e => {
+  const onKeyPressed = (e, index) => {
     if (results !== undefined && results.length !== 0) {
       if (e.key === 'Escape') {
         setResults([]);
         sethighlightedIndex(0);
       }
       if (e.key === 'Tab') {
-        e.preventDefault();
-        handleSubmit(e);
-        sethighlightedIndex(0);
+        handleSelect(e, highlightedIndex);
       }
       if (e.key === 'Enter') {
-        e.preventDefault();
-        handleSubmit(e);
-        sethighlightedIndex(0);
+        handleSelect(e, highlightedIndex);
       }
       if (e.key === 'ArrowDown') {
-        e.preventDefault();
         if (highlightedIndex !== results.length - 1) {
-          setValue(results[highlightedIndex + 1].label);
+          taskRef.current.value = results[highlightedIndex + 1].label;
           sethighlightedIndex(highlightedIndex => highlightedIndex + 1);
         }
       }
       if (e.key === 'ArrowUp') {
-        e.preventDefault();
         if (highlightedIndex !== 0) {
-          setValue(results[highlightedIndex - 1].label);
+          taskRef.current.value = results[highlightedIndex - 1].label;
           sethighlightedIndex(highlightedIndex => highlightedIndex - 1);
         }
       }
     }
   };
 
-  const handleHighlight = index => {
+  const highlight = index => {
     if (highlightedIndex === index) {
-      return 'bg-grey-dark p-2 font-bold cursor-pointer';
+      return 'bg-grey-dark p-2 font-bold cursor-pointer ';
     } else {
-      return 'bg-grey-light p-2 font-bold cursor-pointer';
+      return 'bg-grey-light p-2 font-bold cursor-pointer hover:bg-grey-dark';
     }
   };
 
-  const handleMouseEnter = index => {
-    sethighlightedIndex(index);
-  };
-
-  const handleSelect = e => {
+  const handleSelect = (e, index) => {
     e.preventDefault();
-    handleSubmit(e);
+    handleSubmit(e, index);
     sethighlightedIndex(0);
   };
 
@@ -106,10 +93,9 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
       return (
         <li
           onKeyDown={onKeyPressed}
-          onMouseDown={handleSelect}
-          onMouseEnter={() => handleMouseEnter(index)}
+          onClick={e => handleSelect(e, index)}
           key={result.value}
-          className={handleHighlight(index)}
+          className={highlight(index)}
         >
           {replaceAt(result.label, result.indexes)}
         </li>
@@ -118,12 +104,11 @@ export const TodoForm = ({ addTask, taskRef, client, setError }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form>
       <input
         className="w-full bg-grey-light rounded-t p-2 text-black"
         placeholder="Add new task..."
         onChange={handleChange}
-        value={value}
         ref={taskRef}
         onKeyDown={onKeyPressed}
         tabIndex="0"

@@ -97,6 +97,9 @@ func main() {
 func (s *server) ListTasks(ctx context.Context, in *pb.Empty) (*pb.TaskResponse, error) {
 
 	fmt.Println("New Request: ListTasks")
+
+	time.Sleep(1 * time.Second)
+
 	fmt.Println("ListTasks: Complete!")
 
 	return &pb.TaskResponse{Tasks: s.data}, nil
@@ -106,7 +109,7 @@ func (s *server) NewTask(ctx context.Context, in *pb.Task) (*pb.Empty, error) {
 
 	fmt.Println("NewTask Request:", in)
 
-	time.Sleep(500 * time.Millisecond) // To simulate a delayed response
+	time.Sleep(1000 * time.Millisecond) // To simulate a delayed response
 
 	data := []*pb.Task{
 		{Message: in.Message, Uuid: in.Uuid},

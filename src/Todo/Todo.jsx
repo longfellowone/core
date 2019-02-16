@@ -4,21 +4,48 @@ import { TodoList } from './TodoList';
 import { TodoClient } from './proto/todo_grpc_web_pb';
 import { Empty, Task, RemoveTaskRequest } from './proto/todo_pb';
 
-const Todo = () => {
-  const [tasks, setTasks] = useState([]);
-  const [error, setError] = useState(false);
-  const taskRef = useRef();
+const createPromiseResolver = () => {
+  let resolve;
+  const promise = new Promise(r => {
+    resolve = r;
+  });
+  return { resolve, promise };
+};
 
-  const client = new TodoClient(
-    'http://' + window.location.hostname + ':8080',
-    null,
-    null,
-  );
+const getTasksTest = () => {
+  const request = new Empty();
+
+  client.listTasks(request, {}, (err, response) => {
+    if (err) {
+      //setError(true);
+      return console.log(err);
+    }
+    //setTasks([...tasks, ...response.toObject().tasksList.map(task => task)]);
+  });
+};
+
+export const Todo = () => {
+  const [tasks, setTasks] = useState([]);
+  const taskRef = useRef();
 
   useEffect(() => {
     taskRef.current.focus();
     getTasks();
     document.body.style.backgroundColor = 'grey';
+
+    // var doubleTouchStartTimestamp = 0;
+    // const funcRef = e => {
+    //   var now = +new Date();
+    //   if (doubleTouchStartTimestamp + 500 > now) {
+    //     e.preventDefault();
+    //   }
+    //   doubleTouchStartTimestamp = now;
+    // };
+
+    // document.addEventListener('touchend', funcRef, false);
+    // return () => {
+    //   document.removeEventListener('touchend', funcRef);
+    // };
   }, []);
 
   return (
@@ -29,15 +56,7 @@ const Todo = () => {
             <TodoList key={task.uuid} task={task} removeTask={removeTask} />
           ))}
         </ul>
-        <TodoForm
-          addTask={addTask}
-          taskRef={taskRef}
-          client={client}
-          setError={setError}
-        />
-        {error && (
-          <div className="mt-3 px-1">Error: Can't connect to server</div>
-        )}
+        <TodoForm addTask={addTask} taskRef={taskRef} client={client} />
       </div>
     </div>
   );
@@ -46,28 +65,11 @@ const Todo = () => {
     const request = new Empty();
 
     client.listTasks(request, {}, (err, response) => {
-      if (err) {
-        setError(true);
-        return console.log(err);
-      }
-      // response.getTasksList().map(task => task.toObject())
-
-      // response.getTasksList().map(task => {
-      //   return {
-      //     uuid: task.getUuid(),
-      //     message: task.getMessage(),
-      //   };
-      // })
-
       setTasks([...tasks, ...response.toObject().tasksList.map(task => task)]);
     });
   }
 
   function addTask(uuid, message) {
-    if (error) {
-      setError(false);
-    }
-
     setTasks([...tasks, { uuid, message, pending: true }]);
 
     const request = new Task();
@@ -75,12 +77,6 @@ const Todo = () => {
     request.setMessage(message);
 
     client.newTask(request, {}, err => {
-      if (err) {
-        setError(true);
-        console.log(err);
-        removeTaskFromState(uuid);
-        return;
-      }
       removePending(uuid);
     });
   }
@@ -90,11 +86,6 @@ const Todo = () => {
     request.setUuid(uuid);
 
     client.removeTask(request, {}, err => {
-      if (err) {
-        setError(true);
-        console.log(err);
-        return;
-      }
       removeTaskFromState(uuid);
     });
   }
@@ -115,4 +106,8 @@ const Todo = () => {
   }
 };
 
-export { Todo };
+const client = new TodoClient(
+  'http://' + window.location.hostname + ':8080',
+  null,
+  null,
+);

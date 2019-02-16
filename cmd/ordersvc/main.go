@@ -10,7 +10,7 @@ import (
 	"core/pkg/field"
 
 	"core/pkg/postgres"
-	"core/pkg/search"
+	//"core/pkg/search"
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
@@ -31,40 +31,39 @@ const (
 func main() {
 
 	var (
-		dbHost                    = defaultDBHost
-		dbPort                    = defaultDBPort
-		dbUser                    = defaultDBUser
-		dbPasswd                  = defaultDBPasswd
-		dbName                    = defaultDBName
-		postgresConnnectionString = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s", dbHost, dbPort, dbUser, dbPasswd, dbName, sslMode)
+		dbHost                   = defaultDBHost
+		dbPort                   = defaultDBPort
+		dbUser                   = defaultDBUser
+		dbPasswd                 = defaultDBPasswd
+		dbName                   = defaultDBName
+		postgresConnectionString = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s", dbHost, dbPort, dbUser, dbPasswd, dbName, sslMode)
 	)
 
 	//ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	//defer cancel()
 
-	db, err := sql.Open("postgres", postgresConnnectionString)
+	db, err := sql.Open("postgres", postgresConnectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
-	err = db.Ping()
-	if err != nil {
+	if err = db.Ping(); err != nil {
 		log.Fatal(err)
 	}
 
-	var (
-		orders   procurement.OrderRepository
-		products procurement.ProductRepository
-	)
+	//var (
+	//	orders procurement.OrderRepository
+	//	//products procurement.ProductRepository
+	//)
 
-	orders = postgres.NewOrderRepository(db)
-	products = postgres.NewProductRepository(db)
+	orders := postgres.NewOrderRepository(db)
+	//products = postgres.NewProductRepository(db)
 
 	os := field.NewService(orders)
-	ss := search.NewService(products)
+	//ss := search.NewService(products)
 
-	ss.Test()
+	//ss.Test()
 
 	OrderID := procurement.OrderID(1)
 	fmt.Println(os.FindOrderByID(OrderID))

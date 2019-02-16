@@ -3,7 +3,7 @@
 //CTRL + SHIFT + F10
 //ALT + ENTER -> Fill struct
 
-package main
+// package main
 
 import (
 	"context"

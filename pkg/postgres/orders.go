@@ -7,15 +7,21 @@ import (
 	"core/pkg/postgres/models"
 	"database/sql"
 	"fmt"
+	"github.com/google/wire"
 	"log"
 )
 
-type orderRepository struct {
+var Set = wire.NewSet(
+	NewOrderRepository,
+	Dial,
+)
+
+type OrderRepository struct {
 	ctx context.Context
 	db  *sql.DB
 }
 
-func (r *orderRepository) Find(id procurement.OrderID) (*procurement.Order, error) {
+func (r *OrderRepository) Find(id procurement.OrderID) (*procurement.Order, error) {
 
 	one, err := models.Products().One(r.db)
 	if err != nil {
@@ -32,13 +38,26 @@ func (r *orderRepository) Find(id procurement.OrderID) (*procurement.Order, erro
 	}, nil
 }
 
-func (r *orderRepository) FindAll() {}
-func (r *orderRepository) Create()  {}
-func (r *orderRepository) Delete()  {}
-func (r *orderRepository) Update()  {}
+func (r *OrderRepository) FindAll() {}
+func (r *OrderRepository) Create()  {}
+func (r *OrderRepository) Delete()  {}
+func (r *OrderRepository) Update()  {}
 
-func NewOrderRepository(db *sql.DB) procurement.OrderRepository {
-	return &orderRepository{
+func Dial(postgresConnectionString string) *sql.DB {
+	db, err := sql.Open("postgres", postgresConnectionString)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	if err = db.Ping(); err != nil {
+		log.Fatal(err)
+	}
+	return db
+}
+
+func NewOrderRepository(db *sql.DB) *OrderRepository {
+	return &OrderRepository{
 		db: db,
 	}
 }
