@@ -4,6 +4,7 @@ import { FindProductRequest } from './proto/todo_pb';
 
 export const TodoForm = ({ addTask, taskRef, client }) => {
   const [results, setResults] = useState([]);
+  const [input, setInput] = useState('');
   const [highlightedIndex, sethighlightedIndex] = useState(0);
 
   const handleSubmit = (e, index) => {
@@ -12,14 +13,15 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
       addTask(uuid(), results[index].label);
       setResults([]);
       sethighlightedIndex(0);
-      taskRef.current.value = '';
+      setInput('');
     }
   };
 
-  const handleChange = async () => {
+  const handleChange = async e => {
     const currentSearch = taskRef.current.value;
     const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
     const updatedResults = await findProduct(newSearch);
+    setInput(currentSearch);
     setResults(updatedResults);
   };
 
@@ -58,13 +60,13 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
       }
       if (e.key === 'ArrowDown') {
         if (highlightedIndex !== results.length - 1) {
-          taskRef.current.value = results[highlightedIndex + 1].label;
+          setInput(results[highlightedIndex + 1].label);
           sethighlightedIndex(highlightedIndex => highlightedIndex + 1);
         }
       }
       if (e.key === 'ArrowUp') {
         if (highlightedIndex !== 0) {
-          taskRef.current.value = results[highlightedIndex - 1].label;
+          setInput(results[highlightedIndex - 1].label);
           sethighlightedIndex(highlightedIndex => highlightedIndex - 1);
         }
       }
@@ -105,6 +107,7 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
         onChange={handleChange}
         onKeyDown={onKeyPressed}
         ref={taskRef}
+        value={input}
         tabIndex="0"
       />
       <ul className="list-reset">
