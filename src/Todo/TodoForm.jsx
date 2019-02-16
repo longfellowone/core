@@ -56,9 +56,6 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
       if (e.key === 'Tab') {
         handleSubmit(e, highlightedIndex);
       }
-      if (e.key === 'Enter') {
-        handleSubmit(e, highlightedIndex);
-      }
       if (e.key === 'ArrowDown') {
         if (highlightedIndex !== results.length - 1) {
           taskRef.current.value = results[highlightedIndex + 1].label;
@@ -101,7 +98,7 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={e => handleSubmit(e, highlightedIndex)}>
       <input
         className="w-full bg-grey-light rounded-t p-2 text-black"
         placeholder="Add new task..."
