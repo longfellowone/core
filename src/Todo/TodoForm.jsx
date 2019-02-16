@@ -22,6 +22,7 @@ export const TodoForm = ({ addTask, client }) => {
     const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
     const updatedResults = await findProduct(newSearch);
     setInput(currentSearch);
+    sethighlightedIndex(0);
     setResults(updatedResults);
   };
 
@@ -90,8 +91,9 @@ export const TodoForm = ({ addTask, client }) => {
   const Result = ({ result, index }) => {
     return (
       <li
-        onKeyDown={onKeyPressed}
+        //onKeyDown={onKeyPressed}
         onClick={e => handleSubmit(e, index)}
+        onMouseEnter={() => sethighlightedIndex(index)}
         className={highlight(index)}
       >
         {replaceAt(result.indexes, result.label)}
@@ -107,8 +109,8 @@ export const TodoForm = ({ addTask, client }) => {
         onChange={handleChange}
         onKeyDown={onKeyPressed}
         value={input}
+        ref={input => input && input.focus()}
         tabIndex="0"
-        autoFocus
       />
       <ul className="list-reset">
         <SearchResults results={results} />
