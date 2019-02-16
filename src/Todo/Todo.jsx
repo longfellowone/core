@@ -1,35 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TodoForm } from './TodoForm';
 import { TodoList } from './TodoList';
 import { TodoClient } from './proto/todo_grpc_web_pb';
 import { Empty, Task, RemoveTaskRequest } from './proto/todo_pb';
 
-const createPromiseResolver = () => {
-  let resolve;
-  const promise = new Promise(r => {
-    resolve = r;
-  });
-  return { resolve, promise };
-};
+// const createPromiseResolver = () => {
+//   let resolve;
+//   const promise = new Promise(r => {
+//     resolve = r;
+//   });
+//   return { resolve, promise };
+// };
 
-const getTasksTest = () => {
-  const request = new Empty();
+// const getTasksTest = () => {
+//   const request = new Empty();
 
-  client.listTasks(request, {}, (err, response) => {
-    if (err) {
-      //setError(true);
-      return console.log(err);
-    }
-    //setTasks([...tasks, ...response.toObject().tasksList.map(task => task)]);
-  });
-};
+//   client.listTasks(request, {}, (err, response) => {
+//     if (err) {
+//       //setError(true);
+//       return console.log(err);
+//     }
+//     //setTasks([...tasks, ...response.toObject().tasksList.map(task => task)]);
+//   });
+// };
 
 export const Todo = () => {
   const [tasks, setTasks] = useState([]);
-  const taskRef = useRef();
 
   useEffect(() => {
-    taskRef.current.focus();
     getTasks();
     document.body.style.backgroundColor = 'grey';
 
@@ -56,7 +54,7 @@ export const Todo = () => {
             <TodoList key={task.uuid} task={task} removeTask={removeTask} />
           ))}
         </ul>
-        <TodoForm addTask={addTask} taskRef={taskRef} client={client} />
+        <TodoForm addTask={addTask} client={client} />
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FindProductRequest } from './proto/todo_pb';
 
-export const TodoForm = ({ addTask, taskRef, client }) => {
+export const TodoForm = ({ addTask, client }) => {
   const [results, setResults] = useState([]);
   const [input, setInput] = useState('');
   const [highlightedIndex, sethighlightedIndex] = useState(0);
@@ -18,7 +18,7 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
   };
 
   const handleChange = async e => {
-    const currentSearch = taskRef.current.value;
+    const currentSearch = e.target.value;
     const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
     const updatedResults = await findProduct(newSearch);
     setInput(currentSearch);
@@ -106,9 +106,9 @@ export const TodoForm = ({ addTask, taskRef, client }) => {
         placeholder="Add new task..."
         onChange={handleChange}
         onKeyDown={onKeyPressed}
-        ref={taskRef}
         value={input}
         tabIndex="0"
+        autoFocus
       />
       <ul className="list-reset">
         <SearchResults results={results} />
