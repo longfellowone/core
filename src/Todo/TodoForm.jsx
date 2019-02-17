@@ -12,9 +12,7 @@ export const TodoForm = ({ addTask }) => {
   const handleChange = async e => {
     e.preventDefault();
     setInput(e.target.value);
-    const currentSearch = e.target.value;
-    const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
-    const updatedResults = await findProduct(newSearch);
+    const updatedResults = await findProduct(e.target.value);
     sethighlightedIndex(0);
     setResults(updatedResults);
   };
