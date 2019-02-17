@@ -63,7 +63,8 @@ export const Todo = () => {
     const request = new Empty();
 
     client.listTasks(request, {}, (err, response) => {
-      setTasks([...tasks, ...response.toObject().tasksList.map(task => task)]);
+      setTasks([]);
+      // setTasks([...tasks, ...response.toObject().tasksList.map(task => task)]);
     });
   }
 

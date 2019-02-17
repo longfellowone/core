@@ -1,62 +1,88 @@
 import React, { useState } from 'react';
 import { v4 as uuid } from 'uuid';
-import { FindProductRequest } from './proto/todo_pb';
+// import { FindProductRequest } from './proto/todo_pb';
+import { ProductSearchRequest } from './proto/search_pb';
+import { searchClient } from './proto/search_grpc_web_pb';
 
-export const TodoForm = ({ addTask, client }) => {
+export const TodoForm = ({ addTask }) => {
   const [results, setResults] = useState([]);
   const [input, setInput] = useState('');
   const [highlightedIndex, sethighlightedIndex] = useState(0);
 
   const handleChange = async e => {
     e.preventDefault();
+    setInput(e.target.value);
     const currentSearch = e.target.value;
     const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
     const updatedResults = await findProduct(newSearch);
-    setInput(currentSearch);
     sethighlightedIndex(0);
     setResults(updatedResults);
   };
 
+  const client = new searchClient(
+    'http://' + window.location.hostname + ':8080',
+    null,
+    null,
+  );
+
   const findProduct = name => {
     return new Promise(resolve => {
-      const request = new FindProductRequest();
+      const request = new ProductSearchRequest();
       request.setName(name);
 
-      client.findProduct(request, {}, (err, response) => {
-        if (err) {
-          console.log(err);
-          return;
+      client.productSearch(request, {}, (err, response) => {
+        if (response === null || err) {
+          return resolve([]);
         }
-
-        response = response.getProductsList().map(product => {
-          return {
-            value: product.getUuid(),
-            label: product.getName(),
-            indexes: product.getIndexesList().map(index => index.getIndex()),
-          };
-        });
-
-        resolve(response);
+        resolve(response.toObject().resultsList.map(product => product));
       });
     });
   };
 
+  // const findProduct = name => {
+  //   return new Promise(resolve => {
+  //     const request = new FindProductRequest();
+  //     request.setName(name);
+
+  //     client.findProduct(request, {}, (err, response) => {
+  //       if (err) {
+  //         console.log(err);
+  //         return;
+  //       }
+
+  //       response = response.getProductsList().map(product => {
+  //         return {
+  //           value: product.getUuid(),
+  //           label: product.getName(),
+  //           indexes: product.getIndexesList().map(index => index.getIndex()),
+  //         };
+  //       });
+
+  //       resolve(response);
+  //     });
+  //   });
+  // };
+
   const onKeyPressed = e => {
     if (e.key === 'Escape') {
+      e.preventDefault();
       setResults([]);
       sethighlightedIndex(0);
     }
     if (e.key === 'Tab') {
+      e.preventDefault();
       handleSubmit(e, highlightedIndex);
     }
     if (results.length > 0) {
       if (e.key === 'ArrowDown') {
+        e.preventDefault();
         if (highlightedIndex !== results.length - 1) {
           setInput(results[highlightedIndex + 1].label);
           sethighlightedIndex(highlightedIndex => highlightedIndex + 1);
         }
       }
       if (e.key === 'ArrowUp') {
+        e.preventDefault();
         if (highlightedIndex !== 0) {
           setInput(results[highlightedIndex - 1].label);
           sethighlightedIndex(highlightedIndex => highlightedIndex - 1);
@@ -68,8 +94,7 @@ export const TodoForm = ({ addTask, client }) => {
   const handleSubmit = (e, index) => {
     e.preventDefault();
     if (results.length === 0) return;
-
-    addTask(uuid(), results[index].label);
+    addTask(uuid(), results[index].name);
     setResults([]);
     setInput('');
     sethighlightedIndex(0);
@@ -89,7 +114,7 @@ export const TodoForm = ({ addTask, client }) => {
       <ul className="list-reset">
         {results.map((result, index) => (
           <Result
-            key={result.value}
+            key={result.productUuid}
             result={result}
             index={index}
             handleSubmit={handleSubmit}
@@ -116,7 +141,7 @@ const Result = ({
       className={'bg-grey-light p-2 font-bold cursor-default'}
       style={highlightedIndex === index ? { background: '#8795a1' } : {}}
     >
-      1{replaceAt(result.indexes, result.label)}
+      {replaceAt(result.indexesList.map(index => index.index), result.name)}
     </li>
   );
 };
