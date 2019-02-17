@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TodoForm } from './TodoForm';
-import { TodoList } from './TodoList';
+import { TaskItem } from './TodoList';
 import { TodoClient } from './proto/todo_grpc_web_pb';
 import { Empty, Task, RemoveTaskRequest } from './proto/todo_pb';
 
@@ -25,38 +25,33 @@ import { Empty, Task, RemoveTaskRequest } from './proto/todo_pb';
 // };
 
 export const Todo = () => {
+  return (
+    <div className="max-w-sm mx-auto">
+      <div className="p-2 my-2 bg-grey rounded">
+        <ul className="list-reset" />
+        <TodoWrap />
+      </div>
+    </div>
+  );
+};
+
+export const TodoWrap = () => {
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     getTasks();
     document.body.style.backgroundColor = 'grey';
-
-    // var doubleTouchStartTimestamp = 0;
-    // const funcRef = e => {
-    //   var now = +new Date();
-    //   if (doubleTouchStartTimestamp + 500 > now) {
-    //     e.preventDefault();
-    //   }
-    //   doubleTouchStartTimestamp = now;
-    // };
-
-    // document.addEventListener('touchend', funcRef, false);
-    // return () => {
-    //   document.removeEventListener('touchend', funcRef);
-    // };
   }, []);
 
+  const taskList = tasks.map(task => (
+    <TaskItem key={task.uuid} task={task} removeTask={removeTask} />
+  ));
+
   return (
-    <div className="max-w-sm mx-auto">
-      <div className="p-2 my-2 bg-grey rounded">
-        <ul className="list-reset">
-          {tasks.map(task => (
-            <TodoList key={task.uuid} task={task} removeTask={removeTask} />
-          ))}
-        </ul>
-        <TodoForm addTask={addTask} client={client} />
-      </div>
-    </div>
+    <>
+      {taskList}
+      <TodoForm addTask={addTask} client={client} />
+    </>
   );
 
   function getTasks() {

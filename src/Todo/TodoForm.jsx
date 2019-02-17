@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
-// import { FindProductRequest } from './proto/todo_pb';
 import { ProductSearchRequest } from './proto/search_pb';
 import { searchClient } from './proto/search_grpc_web_pb';
 
@@ -8,11 +7,6 @@ export const TodoForm = ({ addTask }) => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
   const [highlightedIndex, sethighlightedIndex] = useState(0);
-
-  const handleChange = async e => {
-    e.preventDefault();
-    setInput(e.target.value);
-  };
 
   useEffect(() => {
     if (!input) return;
@@ -29,24 +23,6 @@ export const TodoForm = ({ addTask }) => {
     return () => cancel();
   }, [input]);
 
-  const findProduct = name => {
-    let status;
-    const query = new Promise(resolve => {
-      const request = new ProductSearchRequest();
-      request.setName(name);
-
-      const response = (err, response) => {
-        if (response === null || err) {
-          return resolve([]);
-        }
-        resolve(response.toObject().resultsList.map(product => product));
-      };
-
-      status = client.productSearch(request, {}, response);
-    });
-    return [query, () => status.cancel()];
-  };
-
   const onKeyPressed = e => {
     if (e.key === 'Escape') {
       e.preventDefault();
@@ -55,7 +31,7 @@ export const TodoForm = ({ addTask }) => {
     }
     if (e.key === 'Tab') {
       e.preventDefault();
-      handleSubmit(e, highlightedIndex);
+      Submit(e, highlightedIndex);
     }
     if (results.length > 0) {
       if (e.key === 'ArrowDown') {
@@ -73,7 +49,12 @@ export const TodoForm = ({ addTask }) => {
     }
   };
 
-  const handleSubmit = (e, index) => {
+  const handleChange = e => {
+    e.preventDefault();
+    setInput(e.target.value);
+  };
+
+  const Submit = (e, index) => {
     e.preventDefault();
     if (results.length === 0) return;
     addTask(uuid(), results[index].name);
@@ -82,48 +63,58 @@ export const TodoForm = ({ addTask }) => {
     sethighlightedIndex(0);
   };
 
+  const resultsList = results.map((result, index) => (
+    <Result
+      key={result.productUuid}
+      result={result}
+      index={index}
+      Submit={Submit}
+      highlightedIndex={highlightedIndex}
+      sethighlightedIndex={sethighlightedIndex}
+    />
+  ));
+
+  const focusInput = input => input && input.focus();
+  const handleOnSumbit = e => Submit(e, highlightedIndex);
+
   return (
-    <form onSubmit={e => handleSubmit(e, highlightedIndex)}>
-      <input
-        className="w-full bg-grey-light rounded-t p-2 text-black"
-        placeholder="Add new task..."
-        onChange={handleChange}
-        onKeyDown={onKeyPressed}
-        value={input}
-        ref={input => input && input.focus()}
-        tabIndex="0"
-      />
-      <ul className="list-reset">
-        {results.map((result, index) => (
-          <Result
-            key={result.productUuid}
-            result={result}
-            index={index}
-            handleSubmit={handleSubmit}
-            highlightedIndex={highlightedIndex}
-            sethighlightedIndex={sethighlightedIndex}
-          />
-        ))}
-      </ul>
-    </form>
+    <>
+      <form onSubmit={handleOnSumbit}>
+        <input
+          className="w-full bg-grey-light rounded-t p-2 text-black"
+          placeholder="Add new task..."
+          onChange={handleChange}
+          onKeyDown={onKeyPressed}
+          value={input}
+          ref={focusInput}
+          tabIndex="0"
+        />
+      </form>
+      <ul className="list-reset">{resultsList}</ul>
+    </>
   );
 };
 
 const Result = ({
   result,
   index,
-  handleSubmit,
+  Submit,
   highlightedIndex,
   sethighlightedIndex,
 }) => {
+  const handleOnClick = e => Submit(e, index);
+  const handleOnMouseEnter = () => sethighlightedIndex(index);
+  const indexes = result.indexesList.map(index => index.index);
+  const item = replaceAt(indexes, result.name);
+
   return (
     <li
-      onMouseEnter={() => sethighlightedIndex(index)}
-      onClick={e => handleSubmit(e, index)}
-      className={'bg-grey-light p-2 font-bold cursor-default'}
+      onMouseEnter={handleOnMouseEnter}
+      onClick={handleOnClick}
+      className="bg-grey-light p-2 font-bold cursor-default"
       style={highlightedIndex === index ? { background: '#8795a1' } : {}}
     >
-      {replaceAt(result.indexesList.map(index => index.index), result.name)}
+      {item}
     </li>
   );
 };
@@ -133,6 +124,24 @@ const client = new searchClient(
   null,
   null,
 );
+
+const findProduct = name => {
+  let status;
+  const query = new Promise(resolve => {
+    const request = new ProductSearchRequest();
+    request.setName(name);
+
+    const response = (err, response) => {
+      if (response === null || err) {
+        return resolve([]);
+      }
+      resolve(response.toObject().resultsList.map(product => product));
+    };
+
+    status = client.productSearch(request, {}, response);
+  });
+  return [query, () => status.cancel()];
+};
 
 function replaceAt(indexArray, string) {
   let newString = [...string];
