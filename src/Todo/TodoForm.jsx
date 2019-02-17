@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 // import { FindProductRequest } from './proto/todo_pb';
 import { ProductSearchRequest } from './proto/search_pb';
@@ -16,6 +16,10 @@ export const TodoForm = ({ addTask }) => {
     sethighlightedIndex(0);
     setResults(updatedResults);
   };
+
+  // useEffect(() => {
+  //   return find(setData);
+  // }, []);
 
   const client = new searchClient(
     'http://' + window.location.hostname + ':8080',
