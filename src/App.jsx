@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Order } from './Order/Order';
 
@@ -12,6 +12,9 @@ const Home = () => {
         <li>
           <Link to="/order/">Orders</Link>
         </li>
+        <li>
+          <Link to="/test/">Test</Link>
+        </li>
       </ul>
     </>
   );
@@ -23,10 +26,44 @@ const App = () => (
       <Switch>
         <Route path="/" exact component={Home} />
         <Route path="/order/" component={Order} />
+        <Route path="/test/" component={Test} />
       </Switch>
     </div>
   </Router>
 );
+
+export const Test = () => {
+  const [clicks, setClicks] = useState(0);
+  const [enters, setEnters] = useState(0);
+
+  const handleOnClick = () => {
+    return setClicks(p => p + 1);
+  };
+
+  const handleOnMouseEnter = () => {
+    console.log(Math.random());
+    return setEnters(p => p + 1);
+  };
+
+  return (
+    <>
+      <div>onClicks: {clicks}</div>
+      <div>onEnters: {enters}</div>
+      <div
+        onClick={handleOnClick}
+        onMouseEnter={handleOnMouseEnter}
+        style={{
+          background: 'red',
+          marginTop: '10px',
+          width: '100px',
+          padding: '30px',
+        }}
+      >
+        CLICK ME
+      </div>
+    </>
+  );
+};
 
 export default App;
 

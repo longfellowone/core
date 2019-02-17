@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { v4 as uuid } from 'uuid';
 import { FindProductRequest } from './proto/todo_pb';
 
 export const TodoForm = ({ addTask, client }) => {
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState([
+    { value: 'test1', label: 'test1', indexes: [0, 1, 2, 3, 4] },
+    { value: 'test2', label: 'test2', indexes: [0, 1, 2, 3, 4] },
+    { value: 'test3', label: 'test3', indexes: [0, 1, 2, 3, 4] },
+    { value: 'test4', label: 'test4', indexes: [0, 1, 2, 3, 4] },
+  ]);
   const [input, setInput] = useState('');
   const [highlightedIndex, sethighlightedIndex] = useState(0);
 
-  const handleSubmit = (e, index) => {
-    e.preventDefault();
-    if (results !== undefined && results.length !== 0) {
-      addTask(uuid(), results[index].label);
-      setResults([]);
-      sethighlightedIndex(0);
-      setInput('');
-    }
-  };
+  console.log('render');
 
   const handleChange = async e => {
-    const currentSearch = e.target.value;
-    const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
-    const updatedResults = await findProduct(newSearch);
-    setInput(currentSearch);
-    sethighlightedIndex(0);
-    setResults(updatedResults);
+    e.preventDefault();
+    // const currentSearch = e.target.value;
+    // const newSearch = currentSearch.replace(/[\u201C\u201D]/g, '"');
+    // const updatedResults = await findProduct(newSearch);
+    // setInput(currentSearch);
+    // sethighlightedIndex(0);
+    // console.log(updatedResults);
+    // setResults([{ value: 'test1', label: 'test1', indexes: [0, 1, 2, 3, 4] }]);
   };
 
   const findProduct = name => {
@@ -59,6 +58,9 @@ export const TodoForm = ({ addTask, client }) => {
       if (e.key === 'Tab') {
         handleSubmit(e, highlightedIndex);
       }
+      if (e.key === 'Enter') {
+        handleSubmit(e, highlightedIndex);
+      }
       if (e.key === 'ArrowDown') {
         if (highlightedIndex !== results.length - 1) {
           setInput(results[highlightedIndex + 1].label);
@@ -76,9 +78,9 @@ export const TodoForm = ({ addTask, client }) => {
 
   const highlight = index => {
     if (highlightedIndex === index) {
-      return 'bg-grey-dark p-2 font-bold cursor-pointer';
+      return 'bg-grey-dark p-2 font-bold cursor-default';
     } else {
-      return 'bg-grey-light p-2 font-bold cursor-pointer hover:bg-grey-dark';
+      return 'bg-grey-light p-2 font-bold cursor-default';
     }
   };
 
@@ -88,16 +90,34 @@ export const TodoForm = ({ addTask, client }) => {
     ));
   };
 
+  const handleOnMouseEnter = (e, index) => {
+    console.log('enter');
+    return sethighlightedIndex(p => index);
+  };
+
+  const handleSubmit = (e, index) => {
+    console.log('click');
+    e.preventDefault();
+    if (results !== undefined && results.length !== 0) {
+      //addTask(uuid(), results[index].label);
+      //setResults([]);
+      sethighlightedIndex(0);
+      setInput('');
+    }
+  };
+
   const Result = ({ result, index }) => {
     return (
-      <li
-        //onKeyDown={onKeyPressed}
+      <div
+        onMouseEnter={e => handleOnMouseEnter(e, index)}
         onClick={e => handleSubmit(e, index)}
-        onMouseEnter={() => sethighlightedIndex(index)}
+        // onMouseLeave={() => {
+        //   sethighlightedIndex(0);
+        // }}
         className={highlight(index)}
       >
         {replaceAt(result.indexes, result.label)}
-      </li>
+      </div>
     );
   };
 
@@ -112,9 +132,9 @@ export const TodoForm = ({ addTask, client }) => {
         ref={input => input && input.focus()}
         tabIndex="0"
       />
-      <ul className="list-reset">
+      <div className="flex-inline">
         <SearchResults results={results} />
-      </ul>
+      </div>
     </form>
   );
 

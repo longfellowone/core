@@ -11,7 +11,7 @@ export const TodoList = ({ task, removeTask }) => {
           disabled={task.pending}
           className="bg-red text-white p-2 px-3 rounded-tr rounded-br"
           tabIndex="-1"
-          onMouseDown={() => removeTask(task.uuid)}
+          onClick={() => removeTask(task.uuid)}
         >
           X
         </button>
