@@ -33,35 +33,47 @@ const App = () => (
 );
 
 export const Test = () => {
+  const results = [{ name: 'CLICK ONE' }, { name: 'CLICK TWO' }];
   const [clicks, setClicks] = useState(0);
   const [enters, setEnters] = useState(0);
 
   const handleOnClick = () => {
-    return setClicks(p => p + 1);
+    setClicks(p => p + 1);
   };
 
   const handleOnMouseEnter = () => {
-    console.log(Math.random());
-    return setEnters(p => p + 1);
+    setEnters(p => p + 1);
   };
 
   return (
     <>
       <div>onClicks: {clicks}</div>
       <div>onEnters: {enters}</div>
-      <div
-        onClick={handleOnClick}
-        onMouseEnter={handleOnMouseEnter}
-        style={{
-          background: 'red',
-          marginTop: '10px',
-          width: '100px',
-          padding: '30px',
-        }}
-      >
-        CLICK ME
-      </div>
+      {results.map(r => (
+        <Result
+          name={r.name}
+          handleOnMouseEnter={handleOnMouseEnter}
+          handleOnClick={handleOnClick}
+        />
+      ))}
     </>
+  );
+};
+
+const Result = ({ name, handleOnMouseEnter, handleOnClick }) => {
+  return (
+    <div
+      onMouseEnter={handleOnMouseEnter}
+      onClick={handleOnClick}
+      style={{
+        background: 'red',
+        marginTop: '10px',
+        width: '100px',
+        padding: '30px',
+      }}
+    >
+      {name}
+    </div>
   );
 };
 
