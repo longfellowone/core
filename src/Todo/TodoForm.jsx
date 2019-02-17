@@ -5,65 +5,47 @@ import { ProductSearchRequest } from './proto/search_pb';
 import { searchClient } from './proto/search_grpc_web_pb';
 
 export const TodoForm = ({ addTask }) => {
-  const [results, setResults] = useState([]);
   const [input, setInput] = useState('');
+  const [results, setResults] = useState([]);
   const [highlightedIndex, sethighlightedIndex] = useState(0);
 
   const handleChange = async e => {
     e.preventDefault();
     setInput(e.target.value);
-    const updatedResults = await findProduct(e.target.value);
-    sethighlightedIndex(0);
-    setResults(updatedResults);
   };
 
-  // useEffect(() => {
-  //   return find(setData);
-  // }, []);
-
-  const client = new searchClient(
-    'http://' + window.location.hostname + ':8080',
-    null,
-    null,
-  );
+  useEffect(() => {
+    if (!input) return;
+    let cancel;
+    (async () => {
+      try {
+        let query;
+        [query, cancel] = findProduct(input);
+        const result = await query;
+        setResults(result);
+        sethighlightedIndex(0);
+      } catch (error) {}
+    })();
+    return () => cancel();
+  }, [input]);
 
   const findProduct = name => {
-    return new Promise(resolve => {
+    let status;
+    const query = new Promise(resolve => {
       const request = new ProductSearchRequest();
       request.setName(name);
 
-      client.productSearch(request, {}, (err, response) => {
+      const response = (err, response) => {
         if (response === null || err) {
           return resolve([]);
         }
         resolve(response.toObject().resultsList.map(product => product));
-      });
+      };
+
+      status = client.productSearch(request, {}, response);
     });
+    return [query, () => status.cancel()];
   };
-
-  // const findProduct = name => {
-  //   return new Promise(resolve => {
-  //     const request = new FindProductRequest();
-  //     request.setName(name);
-
-  //     client.findProduct(request, {}, (err, response) => {
-  //       if (err) {
-  //         console.log(err);
-  //         return;
-  //       }
-
-  //       response = response.getProductsList().map(product => {
-  //         return {
-  //           value: product.getUuid(),
-  //           label: product.getName(),
-  //           indexes: product.getIndexesList().map(index => index.getIndex()),
-  //         };
-  //       });
-
-  //       resolve(response);
-  //     });
-  //   });
-  // };
 
   const onKeyPressed = e => {
     if (e.key === 'Escape') {
@@ -79,14 +61,12 @@ export const TodoForm = ({ addTask }) => {
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         if (highlightedIndex !== results.length - 1) {
-          setInput(results[highlightedIndex + 1].label);
           sethighlightedIndex(highlightedIndex => highlightedIndex + 1);
         }
       }
       if (e.key === 'ArrowUp') {
         e.preventDefault();
         if (highlightedIndex !== 0) {
-          setInput(results[highlightedIndex - 1].label);
           sethighlightedIndex(highlightedIndex => highlightedIndex - 1);
         }
       }
@@ -147,6 +127,12 @@ const Result = ({
     </li>
   );
 };
+
+const client = new searchClient(
+  'http://' + window.location.hostname + ':8080',
+  null,
+  null,
+);
 
 function replaceAt(indexArray, string) {
   let newString = [...string];
