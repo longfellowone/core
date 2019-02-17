@@ -42,17 +42,14 @@ export const TodoForm = ({ addTask, client }) => {
   };
 
   const onKeyPressed = e => {
-    if (results !== undefined && results.length !== 0) {
-      if (e.key === 'Escape') {
-        setResults([]);
-        sethighlightedIndex(0);
-      }
-      if (e.key === 'Tab') {
-        handleSubmit(e, highlightedIndex);
-      }
-      if (e.key === 'Enter') {
-        handleSubmit(e, highlightedIndex);
-      }
+    if (e.key === 'Escape') {
+      setResults([]);
+      sethighlightedIndex(0);
+    }
+    if (e.key === 'Tab') {
+      handleSubmit(e, highlightedIndex);
+    }
+    if (results.length > 0) {
       if (e.key === 'ArrowDown') {
         if (highlightedIndex !== results.length - 1) {
           setInput(results[highlightedIndex + 1].label);
@@ -70,12 +67,12 @@ export const TodoForm = ({ addTask, client }) => {
 
   const handleSubmit = (e, index) => {
     e.preventDefault();
-    if (results !== undefined && results.length !== 0) {
-      addTask(uuid(), results[index].label);
-      setResults([]);
-      setInput('');
-      sethighlightedIndex(0);
-    }
+    if (results.length === 0) return;
+
+    addTask(uuid(), results[index].label);
+    setResults([]);
+    setInput('');
+    sethighlightedIndex(0);
   };
 
   return (
@@ -112,21 +109,14 @@ const Result = ({
   highlightedIndex,
   sethighlightedIndex,
 }) => {
-  const highlight = index => {
-    if (highlightedIndex === index) {
-      return 'bg-grey-dark p-2 font-bold cursor-default';
-    } else {
-      return 'bg-grey-light p-2 font-bold cursor-default';
-    }
-  };
-
   return (
     <li
       onMouseEnter={() => sethighlightedIndex(index)}
       onClick={e => handleSubmit(e, index)}
-      className={highlight(index)}
+      className={'bg-grey-light p-2 font-bold cursor-default'}
+      style={highlightedIndex === index ? { background: '#8795a1' } : {}}
     >
-      {replaceAt(result.indexes, result.label)}
+      1{replaceAt(result.indexes, result.label)}
     </li>
   );
 };

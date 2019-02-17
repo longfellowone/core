@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
 import { Order } from './Order/Order';
 
@@ -33,48 +33,7 @@ const App = () => (
 );
 
 export const Test = () => {
-  const results = [{ name: 'CLICK ONE' }, { name: 'CLICK TWO' }];
-  const [clicks, setClicks] = useState(0);
-  const [enters, setEnters] = useState(0);
-
-  const handleOnClick = () => {
-    setClicks(p => p + 1);
-  };
-
-  const handleOnMouseEnter = () => {
-    setEnters(p => p + 1);
-  };
-
-  return (
-    <>
-      <div>onClicks: {clicks}</div>
-      <div>onEnters: {enters}</div>
-      {results.map(r => (
-        <Result
-          name={r.name}
-          handleOnMouseEnter={handleOnMouseEnter}
-          handleOnClick={handleOnClick}
-        />
-      ))}
-    </>
-  );
-};
-
-const Result = ({ name, handleOnMouseEnter, handleOnClick }) => {
-  return (
-    <div
-      onMouseEnter={handleOnMouseEnter}
-      onClick={handleOnClick}
-      style={{
-        background: 'red',
-        marginTop: '10px',
-        width: '100px',
-        padding: '30px',
-      }}
-    >
-      {name}
-    </div>
-  );
+  return null;
 };
 
 export default App;
