@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { ProductSearchRequest } from './proto/search_pb';
 import { searchClient } from './proto/search_grpc_web_pb';
 
@@ -24,7 +24,7 @@ export const TodoForm = ({ addTask }) => {
         }
       } catch (error) {}
     })();
-    return () => cancel();
+    //return () => cancel();
   }, [debouncedInput]);
 
   const onKeyPressed = e => {
@@ -55,7 +55,7 @@ export const TodoForm = ({ addTask }) => {
 
   function handleOnClick(index) {
     // Check for duplicate UUID's
-    // if (results.length === 0) return;
+    if (results.length === 0) return;
     addTask(results[index].productUuid, results[index].name);
     setResults([]);
     setInput('');
