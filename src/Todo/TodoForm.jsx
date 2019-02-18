@@ -56,7 +56,6 @@ export const TodoForm = ({ addTask }) => {
     setResults([]);
     setInput('');
     sethighlightedIndex(0);
-    console.log('click');
     return;
   }
 
@@ -68,7 +67,6 @@ export const TodoForm = ({ addTask }) => {
   function reducer(state, action) {
     switch (action.type) {
       case 'add':
-        console.log(action.index);
         handleOnClick(action.index);
         return;
       default:
