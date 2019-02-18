@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { v4 as uuid } from 'uuid';
+import React, { useState, useEffect, useReducer } from 'react';
 import { ProductSearchRequest } from './proto/search_pb';
 import { searchClient } from './proto/search_grpc_web_pb';
 
@@ -7,6 +6,8 @@ export const TodoForm = ({ addTask }) => {
   const [input, setInput] = useState('');
   const [results, setResults] = useState([]);
   const [highlightedIndex, sethighlightedIndex] = useState(0);
+  const initialState = { input: '', results: [], highlightedIndex: 0 };
+  const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     if (!input) return;
@@ -17,7 +18,6 @@ export const TodoForm = ({ addTask }) => {
         [query, cancel] = findProduct(input);
         const result = await query;
         setResults(result);
-        sethighlightedIndex(0);
       } catch (error) {}
     })();
     return () => cancel();
@@ -49,30 +49,52 @@ export const TodoForm = ({ addTask }) => {
     }
   };
 
-  const handleChange = e => {
-    e.preventDefault();
-    setInput(e.target.value);
-  };
-
-  const Submit = (e, index) => {
-    e.preventDefault();
+  function handleOnClick(index) {
+    // Check for duplicate UUID's
     if (results.length === 0) return;
-    addTask(uuid(), results[index].name);
+    addTask(results[index].productUuid, results[index].name);
     setResults([]);
     setInput('');
     sethighlightedIndex(0);
-  };
+    console.log('click');
+    return;
+  }
+
+  function Submit(e, index) {
+    e.preventDefault();
+    handleOnClick(index);
+  }
+
+  function reducer(state, action) {
+    switch (action.type) {
+      case 'add':
+        console.log(action.index);
+        handleOnClick(action.index);
+        return;
+      default:
+        return state;
+    }
+  }
 
   const resultsList = results.map((result, index) => (
     <Result
       key={result.productUuid}
       result={result}
       index={index}
-      Submit={Submit}
+      dispatch={dispatch}
       highlightedIndex={highlightedIndex}
       sethighlightedIndex={sethighlightedIndex}
     />
   ));
+
+  const handleChange = e => {
+    e.preventDefault();
+    setInput(e.target.value);
+    sethighlightedIndex(0);
+    if (e.target.value === '') {
+      setResults([]);
+    }
+  };
 
   const focusInput = input => input && input.focus();
   const handleOnSumbit = e => Submit(e, highlightedIndex);
@@ -90,34 +112,32 @@ export const TodoForm = ({ addTask }) => {
           tabIndex="0"
         />
       </form>
-      <ul className="list-reset">{resultsList}</ul>
+      <ul className="list-reset bg-grey-light font-bold cursor-default">
+        {resultsList}
+      </ul>
     </>
   );
 };
 
-const Result = ({
-  result,
-  index,
-  Submit,
-  highlightedIndex,
-  sethighlightedIndex,
-}) => {
-  const handleOnClick = e => Submit(e, index);
-  const handleOnMouseEnter = () => sethighlightedIndex(index);
-  const indexes = result.indexesList.map(index => index.index);
-  const item = replaceAt(indexes, result.name);
+const Result = React.memo(
+  ({ result, index, dispatch, highlightedIndex, sethighlightedIndex }) => {
+    const handleOnClick = () => dispatch({ type: 'add', index: index });
+    const handleOnMouseEnter = () => sethighlightedIndex(index);
+    const indexes = result.indexesList.map(index => index.index);
+    const item = replaceAt(indexes, result.name);
 
-  return (
-    <li
-      onMouseEnter={handleOnMouseEnter}
-      onClick={handleOnClick}
-      className="bg-grey-light p-2 font-bold cursor-default"
-      style={highlightedIndex === index ? { background: '#8795a1' } : {}}
-    >
-      {item}
-    </li>
-  );
-};
+    return (
+      <li
+        className="p-2"
+        style={highlightedIndex === index ? { background: '#8795a1' } : {}}
+        onMouseEnter={handleOnMouseEnter}
+        onClick={handleOnClick}
+      >
+        {item}
+      </li>
+    );
+  },
+);
 
 const client = new searchClient(
   'http://' + window.location.hostname + ':8080',
