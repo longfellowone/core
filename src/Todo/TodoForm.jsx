@@ -1,6 +1,41 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import { ProductSearchRequest } from './proto/search_pb';
 import { searchClient } from './proto/search_grpc_web_pb';
+// https://ericp.co/posts/why-react-hooks-are-great/
+
+// const useGrpc = initialState => {
+//   const [data, setData] = useState(initialState);
+
+//   const request = async func => {
+//     try {
+//       const result = await func;
+//       setData(result);
+//     } catch (error) {}
+//   };
+
+//   return [data, setData, request];
+// };
+
+const useGrpcRequest = (setData, func) => {
+  const [requests, setRequests] = useState(0);
+
+  useEffect(() => {
+    let unmounted = false;
+    (async () => {
+      try {
+        if (requests === 0) return;
+        const result = await func;
+        if (unmounted) return;
+        setData(result);
+      } catch (error) {}
+    })();
+    return () => {
+      unmounted = true;
+    };
+  }, [requests]);
+
+  return () => setRequests(r => r + 1);
+};
 
 export const TodoForm = ({ addTask }) => {
   const [input, setInput] = useState('');
@@ -9,22 +44,27 @@ export const TodoForm = ({ addTask }) => {
   const [highlightedIndex, sethighlightedIndex] = useState(0);
   const initialState = { input: '', results: [], highlightedIndex: 0 };
   const [state, dispatch] = useReducer(reducer, initialState);
+  // const [data, setData, request] = useGrpc([]);
+  const [data, setData] = useState([]);
+  const findProductRequest = useGrpcRequest(setData, findProduct('emt'));
+
+  console.log(data);
 
   useEffect(() => {
     if (!debouncedInput) return;
-    let cancel;
+    let unmounted = false;
     (async () => {
       try {
-        let query;
-        [query, cancel] = findProduct(debouncedInput);
-        const result = await query;
-        setResults(result);
-        if (highlightedIndex !== 0) {
+        const result = await findProduct(debouncedInput);
+        if (!unmounted) {
+          setResults(result);
           sethighlightedIndex(0);
         }
       } catch (error) {}
     })();
-    //return () => cancel();
+    return () => {
+      unmounted = true;
+    };
   }, [debouncedInput]);
 
   const onKeyPressed = e => {
@@ -113,6 +153,7 @@ export const TodoForm = ({ addTask }) => {
           tabIndex="0"
         />
       </form>
+      <button onClick={findProductRequest}>text</button>
       <ul className="list-reset bg-grey-light font-bold cursor-default">
         {results && resultsList}
       </ul>
@@ -146,9 +187,8 @@ const client = new searchClient(
   null,
 );
 
-const findProduct = name => {
-  let status;
-  const query = new Promise(resolve => {
+const findProduct = name =>
+  new Promise(resolve => {
     const request = new ProductSearchRequest();
     request.setName(name);
 
@@ -159,10 +199,8 @@ const findProduct = name => {
       resolve(response.toObject().resultsList.map(product => product));
     };
 
-    status = client.productSearch(request, {}, response);
+    client.productSearch(request, {}, response);
   });
-  return [query, () => status.cancel()];
-};
 
 function replaceAt(indexArray, string) {
   let newString = [...string];
