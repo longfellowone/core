@@ -1,8 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import { TodoForm } from './TodoForm';
 import { TaskItem } from './TodoList';
 import { TodoClient } from './proto/todo_grpc_web_pb';
 import { Empty, Task, RemoveTaskRequest } from './proto/todo_pb';
+
+export const Todo = () => {
+  return (
+    <div className="max-w-sm mx-auto">
+      <div className="p-2 my-2 bg-grey rounded">
+        <ul className="list-reset" />
+        <TodoWrap />
+      </div>
+    </div>
+  );
+};
 
 // const createPromiseResolver = () => {
 //   let resolve;
@@ -24,19 +35,42 @@ import { Empty, Task, RemoveTaskRequest } from './proto/todo_pb';
 //   });
 // };
 
-export const Todo = () => {
-  return (
-    <div className="max-w-sm mx-auto">
-      <div className="p-2 my-2 bg-grey rounded">
-        <ul className="list-reset" />
-        <TodoWrap />
-      </div>
-    </div>
-  );
+export const useGrpcRequest = (func, params, setState) => {
+  const [requests, setRequests] = useState(0);
+
+  useEffect(() => {
+    let unmounted = false;
+    (async () => {
+      try {
+        if (requests === 0) return;
+        const result = await func(params);
+        if (unmounted) return;
+        setState(result);
+      } catch (error) {}
+    })();
+    return () => {
+      unmounted = true;
+    };
+  }, [requests]);
+
+  return () => setRequests(r => r + 1);
 };
 
 export const TodoWrap = () => {
   const [tasks, setTasks] = useState([]);
+
+  function testReducer(state, action) {
+    switch (action.type) {
+      case 'add':
+        //handleOnClick(action.index);
+        return;
+      default:
+        return state;
+    }
+  }
+
+  const [test, dispatchTest] = useReducer(testReducer, []);
+  const addRequest = useGrpcRequest();
 
   useEffect(() => {
     getTasks();
