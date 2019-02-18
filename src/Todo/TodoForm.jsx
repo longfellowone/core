@@ -4,24 +4,26 @@ import { searchClient } from './proto/search_grpc_web_pb';
 
 export const TodoForm = ({ addTask }) => {
   const [input, setInput] = useState('');
+  const debouncedInput = useDebounce(input, 30);
   const [results, setResults] = useState([]);
   const [highlightedIndex, sethighlightedIndex] = useState(0);
   const initialState = { input: '', results: [], highlightedIndex: 0 };
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    if (!input) return;
+    if (!debouncedInput) return;
     let cancel;
     (async () => {
       try {
         let query;
-        [query, cancel] = findProduct(input);
+        [query, cancel] = findProduct(debouncedInput);
         const result = await query;
         setResults(result);
+        sethighlightedIndex(0);
       } catch (error) {}
     })();
     return () => cancel();
-  }, [input]);
+  }, [debouncedInput]);
 
   const onKeyPressed = e => {
     if (e.key === 'Escape') {
@@ -88,7 +90,6 @@ export const TodoForm = ({ addTask }) => {
   const handleChange = e => {
     e.preventDefault();
     setInput(e.target.value);
-    sethighlightedIndex(0);
     if (e.target.value === '') {
       setResults([]);
     }
@@ -174,4 +175,19 @@ function replaceAt(indexArray, string) {
     });
   }
   return newString;
+}
+
+function useDebounce(value, delay) {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+  return debouncedValue;
 }
