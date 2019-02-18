@@ -19,7 +19,9 @@ export const TodoForm = ({ addTask }) => {
         [query, cancel] = findProduct(debouncedInput);
         const result = await query;
         setResults(result);
-        sethighlightedIndex(0);
+        if (highlightedIndex !== 0) {
+          sethighlightedIndex(0);
+        }
       } catch (error) {}
     })();
     return () => cancel();
@@ -53,7 +55,7 @@ export const TodoForm = ({ addTask }) => {
 
   function handleOnClick(index) {
     // Check for duplicate UUID's
-    if (results.length === 0) return;
+    // if (results.length === 0) return;
     addTask(results[index].productUuid, results[index].name);
     setResults([]);
     setInput('');
@@ -76,17 +78,6 @@ export const TodoForm = ({ addTask }) => {
     }
   }
 
-  const resultsList = results.map((result, index) => (
-    <Result
-      key={result.productUuid}
-      result={result}
-      index={index}
-      dispatch={dispatch}
-      highlightedIndex={highlightedIndex}
-      sethighlightedIndex={sethighlightedIndex}
-    />
-  ));
-
   const handleChange = e => {
     e.preventDefault();
     setInput(e.target.value);
@@ -97,6 +88,17 @@ export const TodoForm = ({ addTask }) => {
 
   const focusInput = input => input && input.focus();
   const handleOnSumbit = e => Submit(e, highlightedIndex);
+
+  const resultsList = results.map((result, index) => (
+    <Result
+      key={result.productUuid}
+      result={result}
+      index={index}
+      dispatch={dispatch}
+      highlightedIndex={highlightedIndex}
+      sethighlightedIndex={sethighlightedIndex}
+    />
+  ));
 
   return (
     <>
@@ -112,7 +114,7 @@ export const TodoForm = ({ addTask }) => {
         />
       </form>
       <ul className="list-reset bg-grey-light font-bold cursor-default">
-        {resultsList}
+        {results && resultsList}
       </ul>
     </>
   );
